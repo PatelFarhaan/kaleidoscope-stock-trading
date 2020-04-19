@@ -11,22 +11,28 @@ admin_blueprint = Blueprint('admin', '__name__', template_folder='templates', st
 #<==================================================================================================>
 #                                    ADMIN PANEL LOGIN
 #<==================================================================================================>
-@admin_blueprint.route('/login')
+@admin_blueprint.route('/login', methods=["GET", "POST"])
 def login():
-    email = request.form.get("email")
-    password = request.form.get("password")
-    required = (email, password)
-    if not all(required):
-        return jsonify({"result": False, "message": "Email and Password are manditory fields"})
+    if request.method == "POST":
+        email = request.form.get("email")
+        password = request.form.get("password")
+        required = (email, password)
+        if not all(required):
+            return render_template('login.html', res={"result": False, "message": "Email and Password are Manditory"})
 
-    admin_obj = AdminPortal.objects.filter(email=email).first()
-    if not admin_obj:
-        return jsonify({"result": False, "message": "user does not exist"})
+        admin_obj = AdminPortal.objects.filter(email=email).first()
+        if not admin_obj:
+            request.path = None
+            return render_template('login.html', res={"result": False, "message": "Wrong Credentials"})
 
-    if check_password_hash(admin_obj.password, password):
-        login_user(admin_obj)
-        return redirect(url_for('admin.investor_account'))
-    return jsonify({"result": False, "message": "Wrong Credentials"})
+        if check_password_hash(admin_obj.password, password):
+            login_user(admin_obj)
+            return redirect(url_for('admin.investor_account'))
+        request.path=None
+        return render_template('login.html', res={"result": False, "message": "Wrong Credentials"})
+
+    elif request.method == "GET":
+        return render_template("login.html")
 
 
 

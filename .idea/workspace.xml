@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="38c032e6-a1c9-48c3-acaf-0931239f39c1" name="Default Changelist" comment="" />
+    <list default="true" id="38c032e6-a1c9-48c3-acaf-0931239f39c1" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/project/admin/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/project/admin/views.py" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -15,7 +18,11 @@
       </list>
     </option>
   </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
   <component name="ProjectId" id="1aeBgzPbCkgZvqPigbYwziO2XYA" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showExcludedFiles" value="true" />
@@ -25,7 +32,7 @@
     <property name="DefaultHtmlFileTemplate" value="HTML File" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/project/static/images" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="node.js.detected.package.eslint" value="true" />
     <property name="node.js.detected.package.tslint" value="true" />
     <property name="node.js.path.for.package.eslint" value="project" />
@@ -60,7 +67,8 @@
       <workItem from="1587169152682" duration="8761000" />
       <workItem from="1587193419292" duration="892000" />
       <workItem from="1587202332878" duration="1789000" />
-      <workItem from="1587239873948" duration="10563000" />
+      <workItem from="1587239873948" duration="10783000" />
+      <workItem from="1587327686454" duration="2519000" />
     </task>
     <servers />
   </component>
@@ -81,5 +89,9 @@
     </state>
     <state x="221" y="100" key="SettingsEditor/0.23.1440.877@0.23.1440.877" timestamp="1587208123209" />
     <state x="221" y="100" key="SettingsEditor/1440.-98.1194.811/0.23.1440.877@0.23.1440.877" timestamp="1587086975994" />
+    <state x="1592" y="37" width="670" height="676" key="search.everywhere.popup" timestamp="1587329277717">
+      <screen x="1440" y="-98" width="1194" height="811" />
+    </state>
+    <state x="1592" y="37" width="670" height="676" key="search.everywhere.popup/1440.-98.1194.811/0.23.1440.877@1440.-98.1194.811" timestamp="1587329277717" />
   </component>
 </project>
