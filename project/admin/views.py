@@ -1,9 +1,9 @@
 from werkzeug.security import check_password_hash
 from project.models import Investor, Startup, AdminPortal
+from common_utilities.file_processing import inv_file_process
 from flask_login import login_required, login_user, logout_user
-from flask import Blueprint, render_template, request, redirect, url_for, jsonify
+from flask import Blueprint, render_template, request, redirect, url_for, jsonify, session
 from project.admin.admin_serializer import InvestorSerialize, StartupSerialize, StartupSerializeSingle, InvestorSerializeSingle
-
 
 admin_blueprint = Blueprint('admin', '__name__', template_folder='templates', static_folder='static', url_prefix='/admin')
 
@@ -74,7 +74,21 @@ def investor_account():
         return render_template('investor.html', inv_data=return_data)
 
     elif request.method == "POST":
-        if request.form.get('approve'):
+        if request.files:
+            file_obj = request.files.get('inv_csv')
+
+            if not file_obj:
+                return redirect(url_for('admin.investor_account'))
+
+            res = inv_file_process(file_obj, True)
+            if res:
+                session["success"] = "All Investor's updated successfully"
+                return redirect(url_for('admin.investor_account'))
+            else:
+                session["errors"] = "Some problem occurred while processing the file"
+                return redirect(url_for('admin.investor_account'))
+
+        elif request.form.get('approve'):
             print(request.form)
             user_email = request.form.get('approve')
             if not user_email:
@@ -167,6 +181,20 @@ def startup_account():
         return render_template('startup.html', inv_data=return_data)
 
     elif request.method == "POST":
+        if request.files:
+            file_obj = request.files.get('str_csv')
+
+            if not file_obj:
+                return redirect(url_for('admin.startup_account'))
+
+            res = inv_file_process(file_obj, False)
+            if res:
+                session["success"] = "All Startup's updated successfully"
+                return redirect(url_for('admin.startup_account'))
+            else:
+                session["errors"] = "Some problem occurred while processing the file"
+                return redirect(url_for('admin.startup_account'))
+
         if request.form.get('approve'):
             print(request.form)
             user_email = request.form.get('approve')

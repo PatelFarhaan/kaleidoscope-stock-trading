@@ -1,342 +1,382 @@
 <!DOCTYPE html>
 <html dir="ltr" lang="en">
-   <head>
-      <meta charset="utf-8">
-      <meta http-equiv="X-UA-Compatible" content="IE=edge">
-      <meta name="viewport" content="width=device-width, initial-scale=1">
-      <meta name="description" content="">
-      <meta name="author" content="">
-      <link rel="icon" type="image/png" sizes="16x16" href="../static/images/favicon.png">
-      <title>AngelFund Admin Panel</title>
-      <link href="https://cdn.datatables.net/1.10.20/css/jquery.dataTables.min.css">
-      <link href="../static/chartist/dist/chartist.min.css" rel="stylesheet">
-      <link href="../static/css/style.min.css" rel="stylesheet">
-      <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
-      <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
-      <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
-      <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
-      <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
-      <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
-      <style>
-         .pagination {
+<head>
+   <meta charset="utf-8">
+   <meta http-equiv="X-UA-Compatible" content="IE=edge">
+   <meta name="viewport" content="width=device-width, initial-scale=1">
+   <meta name="description" content="">
+   <meta name="author" content="">
+   <link rel="icon" type="image/png" sizes="16x16" href="../static/images/favicon.png">
+   <title>AngelFund Admin Panel</title>
+   <link href="https://cdn.datatables.net/1.10.20/css/jquery.dataTables.min.css">
+   <link href="../static/chartist/dist/chartist.min.css" rel="stylesheet">
+   <link href="../static/css/style.min.css" rel="stylesheet">
+   <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+   <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+   <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+   <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+   <style>
+      .pagination {
          display: inline-block;
-         }
-         .pagination a {
+      }
+      .pagination a {
          color: black;
          float: left;
          padding: 8px 16px;
          text-decoration: none;
-         }
-         .pagination a.active {
+      }
+      .pagination a.active {
          background-color: #4CAF50;
          color: white;
-         }
-         .pagination a:hover:not(.active) {background-color: #ddd;}
-      </style>
-      <style>
-         img {
+      }
+      .pagination a:hover:not(.active) {background-color: #ddd;}
+   </style>
+   <style>
+      img {
          border-radius: 50%;
-         }
-      </style>
-   </head>
-   <body>
-      <div class="preloader">
-         <div class="lds-ripple">
-            <div class="lds-pos"></div>
-            <div class="lds-pos"></div>
+      }
+   </style>
+</head>
+<body>
+<div class="preloader">
+   <div class="lds-ripple">
+      <div class="lds-pos"></div>
+      <div class="lds-pos"></div>
+   </div>
+</div>
+<br>
+{% if session["success"] %}
+<div class="alert alert-success" role="alert">
+   {{ session["success"] }}
+</div>
+{% endif %}
+{% if session["errors"] %}
+<div class="alert alert-danger" role="alert">
+   {{ session["errors"] }}
+</div>
+{% endif %}
+<h1 align="center"><img src="../static/images/angelfund.png" alt="AngelFund AI" width="180" height="100"></h1>
+<h3 align="center">
+   DASHBOARD FOR STARTUP'S AND INVESTOR'S
+</h3>
+<div id="main-wrapper" data-navbarbg="skin6" data-theme="light" data-layout="vertical" data-sidebartype="full" data-boxed-layout="full">
+   <div class="page-breadcrumb">
+   </div>
+   <div class="container-fluid">
+      <div class="row">
+         <div class="col-md-4">
+            <div class="card">
+               <div class="card-body">
+                  <h4 class="card-title m-b-0 font-weight-bold text-warning"><a class="font-weight-bold text-warning" href="{{ url_for('admin.investor_account') }}">INVESTORS</a></h4>
+                  <br>
+                  <h2 class="font-light font-weight-bold">{{inv_data["total_count_inv"]}} <span class="font-16 text-success font-medium">+23%</span></h2>
+                  <div class="m-t-30">
+                     <div class="row text-center">
+                        <div class="col-6 border-right">
+                           <h4 class="m-b-0">58%</h4>
+                           <span class="font-14 text-muted">New Users</span>
+                        </div>
+                        <div class="col-6">
+                           <h4 class="m-b-0">42%</h4>
+                           <span class="font-14 text-muted">Repeat Users</span>
+                        </div>
+                     </div>
+                  </div>
+               </div>
+            </div>
+         </div>
+         <div class="col-md-4">
+            <div class="card">
+               <div class="card-body">
+                  <h4 class="card-title m-b-0 font-weight-bold text-info"><a class="font-weight-bold text-info" href="{{ url_for('admin.startup_account') }}">STARTUPS</a></h4>
+                  <br>
+                  <h2 class="font-light font-weight-bold">{{inv_data["total_count_str"]}} <span class="font-16 text-success font-medium">+23%</span></h2>
+                  <div class="m-t-30">
+                     <div class="row text-center">
+                        <div class="col-6 border-right">
+                           <h4 class="m-b-0">58%</h4>
+                           <span class="font-14 text-muted">New Users</span>
+                        </div>
+                        <div class="col-6">
+                           <h4 class="m-b-0">42%</h4>
+                           <span class="font-14 text-muted">Repeat Users</span>
+                        </div>
+                     </div>
+                  </div>
+               </div>
+            </div>
+         </div>
+         <div class="col-md-4">
+            <div class="card">
+               <div class="card-body">
+                  <h4 class="card-title m-b-0 font-weight-bold text-secondary">TOTAL USERS</h4>
+                  <br>
+                  <h2 class="font-light font-weight-bold">{{inv_data["total_count_str"] + inv_data["total_count_inv"]}} <span class="font-16 text-success font-medium">+23%</span></h2>
+                  <div class="m-t-30">
+                     <div class="row text-center">
+                        <div class="col-6 border-right">
+                           <h4 class="m-b-0">58%</h4>
+                           <span class="font-14 text-muted">New Users</span>
+                        </div>
+                        <div class="col-6">
+                           <h4 class="m-b-0">42%</h4>
+                           <span class="font-14 text-muted">Repeat Users</span>
+                        </div>
+                     </div>
+                  </div>
+               </div>
+            </div>
          </div>
       </div>
       <br>
-      <h1 align="center"><img src="../static/images/angelfund.png" alt="AngelFund AI" width="180" height="100"></h1>
-      <h3 align="center">
-         DASHBOARD FOR STARTUP'S AND INVESTOR'S
-      </h3>
-      <div id="main-wrapper" data-navbarbg="skin6" data-theme="light" data-layout="vertical" data-sidebartype="full" data-boxed-layout="full">
-         <div class="page-breadcrumb">
-         </div>
-         <div class="container-fluid">
-            <div class="row">
-               <div class="col-md-4">
-                  <div class="card">
-                     <div class="card-body">
-                        <h4 class="card-title m-b-0 font-weight-bold text-warning"><a class="font-weight-bold text-warning" href="{{ url_for('admin.investor_account') }}">INVESTORS</a></h4>
-                        <br>
-                        <h2 class="font-light font-weight-bold">{{inv_data["total_count_inv"]}} <span class="font-16 text-success font-medium">+23%</span></h2>
-                        <div class="m-t-30">
-                           <div class="row text-center">
-                              <div class="col-6 border-right">
-                                 <h4 class="m-b-0">58%</h4>
-                                 <span class="font-14 text-muted">New Users</span>
-                              </div>
-                              <div class="col-6">
-                                 <h4 class="m-b-0">42%</h4>
-                                 <span class="font-14 text-muted">Repeat Users</span>
-                              </div>
-                           </div>
-                        </div>
-                     </div>
-                  </div>
-               </div>
-               <div class="col-md-4">
-                  <div class="card">
-                     <div class="card-body">
-                        <h4 class="card-title m-b-0 font-weight-bold text-info"><a class="font-weight-bold text-info" href="{{ url_for('admin.startup_account') }}">STARTUPS</a></h4>
-                        <br>
-                        <h2 class="font-light font-weight-bold">{{inv_data["total_count_str"]}} <span class="font-16 text-success font-medium">+23%</span></h2>
-                        <div class="m-t-30">
-                           <div class="row text-center">
-                              <div class="col-6 border-right">
-                                 <h4 class="m-b-0">58%</h4>
-                                 <span class="font-14 text-muted">New Users</span>
-                              </div>
-                              <div class="col-6">
-                                 <h4 class="m-b-0">42%</h4>
-                                 <span class="font-14 text-muted">Repeat Users</span>
-                              </div>
-                           </div>
-                        </div>
-                     </div>
-                  </div>
-               </div>
-               <div class="col-md-4">
-                  <div class="card">
-                     <div class="card-body">
-                        <h4 class="card-title m-b-0 font-weight-bold text-secondary">TOTAL USERS</h4>
-                        <br>
-                        <h2 class="font-light font-weight-bold">{{inv_data["total_count_str"] + inv_data["total_count_inv"]}} <span class="font-16 text-success font-medium">+23%</span></h2>
-                        <div class="m-t-30">
-                           <div class="row text-center">
-                              <div class="col-6 border-right">
-                                 <h4 class="m-b-0">58%</h4>
-                                 <span class="font-14 text-muted">New Users</span>
-                              </div>
-                              <div class="col-6">
-                                 <h4 class="m-b-0">42%</h4>
-                                 <span class="font-14 text-muted">Repeat Users</span>
-                              </div>
-                           </div>
-                        </div>
-                     </div>
-                  </div>
-               </div>
+      <br>
+      {% if inv_data["result"]  %}
+
+
+
+      <form method="POST" enctype="multipart/form-data">
+         <div class="form-group">
+            <label class="control-label">Investor Data</label>
+            <div class="custom-file">
+               <input type="file" class="custom-file-input" name="inv_csv" aria-describedby="inputGroupFileAddon01">
+               <label class="custom-file-label" for="inputGroupFile01">Choose file</label>
             </div>
-            <br>
-            <br>
-            {% if inv_data["result"]  %}
-            <div class="row">
-               <div class="col-12">
-                  <div class="card">
-                     <div class="card-body">
-                        <h4 class="card-title font-weight-bold text-primary">INVESTOR'S PROFILE</h4>
-                     </div>
-                     <div class="table-responsive">
-                        <table class="table table-hover table-bordered" id="investor_table">
-                           <thead class="thead-dark">
-                              <tr>
-                                 <th class="border-top-0">PROFILE</th>
-                                 <th class="border-top-0">NAME</th>
-                                 <th class="border-top-0">CREATED</th>
-                                 <th class="border-top-0">LOCATION</th>
-                                 <th class="border-top-0">EC</th>
-                                 <th class="border-top-0">ANGEL</th>
-                                 <th class="border-top-0">APPROVED</th>
-                                 <th class="border-top-0">ACTION</th>
-                              </tr>
-                           </thead>
-                           <tbody>
-                              {% for user in inv_data["data"] %}
-                              <tr class="load_info" data-id="{{user["email"]}}" data-toggle="modal" data-target="#exampleModal">
-                              {% if user["profile_pic_link"] %}
-                              <td class="font-medium"><img src={{ user["profile_pic_link"] }} alt={{ user["first_name"] }} width="40" height="40"></td>
-                              {% else %}
-                              <td class="font-medium"><img src="../static/images/Google Fonts Downloads/{{user["first_name"][0].upper()}}.png" alt={{ user["first_name"] }} width="40" height="40"></td>
-                              {% endif %}
-                              <td class="font-medium">{{user["first_name"]}}</td>
-                              <td class="font-medium">{{user["created"]}}</span></td>
-                              <td class="font-medium">{{user["location"]}}</td>
-                              {% if user["email_confirmed"] == False %}
-                              <td><span class="label label-danger label-rounded">{{user["email_confirmed"]}}</span></td>
-                              {% else %}
-                              <td><span class="label label-success label-rounded">{{user["email_confirmed"]}}</span></td>
-                              {% endif %}
-                              {% if user["angel"] == False %}
-                              <td><span class="label label-danger label-rounded">{{user["angel"]}}</span></td>
-                              {% elif user["angel"] == True %}
-                              <td><span class="label label-success label-rounded">{{user["angel"]}}</span></td>
-                              {% else %}
-                              <td><span class="label label-info label-rounded">{{user["angel"]}}</span></td>
-                              {% endif %}
-                              {% if user["approved"] == False %}
-                              <td><span class="label label-danger label-rounded">{{user["approved"]}}</span></td>
-                              {% else %}
-                              <td><span class="label label-success label-rounded">{{user["approved"]}}</span></td>
-                              {% endif %}
-                              <td>
-                                 {% if user["approved"] == False %}
-                                 <form  method="POST">
-                                    <input type="hidden" name="approve" value="{{ user["email"] }}">
-                                    <input class="btn btn-primary" type="submit" onclick="return confirm('Are you sure you want to approve this user?')" value="Approve">
-                                 </form>
-                                 {% else %}
-                                 <form  method="POST">
-                                    <input type="hidden" name="disapprove" value="{{ user["email"] }}">
-                                    <input class="btn btn-danger" type="submit" onclick="return confirm('Are you sure you want to approve this user?')" value="Disapprove">
-                                 </form>
-                                 {% endif %}
-                              </td>
-                              </tr>
-                              {% endfor %}
-                           </tbody>
-                        </table>
-                        <br>
-                        <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                           <div class="modal-dialog" role="document">
-                              <div class="modal-content">
-                                 <div class="modal-header">
-                                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
-                                    <h4 class="modal-title font-weight-bold" text-align="center" id="myModalLabel">INVESTOR</h4>
+            <button type="submit" class="btn btn-primary">Submit</button>
+         </div>
+      </form>
+
+      <br>
+      <script>
+         // Add the following code if you want the name of the file appear on select
+         $(".custom-file-input").on("change", function () {
+            var fileName = $(this).val().split("\\").pop();
+            $(this).siblings(".custom-file-label").addClass("selected").html(fileName);
+         });
+      </script>
+
+
+
+
+
+
+
+
+      <div class="row">
+         <div class="col-12">
+            <div class="card">
+               <div class="card-body">
+                  <h4 class="card-title font-weight-bold text-primary">INVESTOR'S PROFILE</h4>
+               </div>
+               <div class="table-responsive">
+                  <table class="table table-hover table-bordered" id="investor_table">
+                     <thead class="thead-dark">
+                     <tr>
+                        <th class="border-top-0">PROFILE</th>
+                        <th class="border-top-0">NAME</th>
+                        <th class="border-top-0">CREATED</th>
+                        <th class="border-top-0">LOCATION</th>
+                        <th class="border-top-0">EC</th>
+                        <th class="border-top-0">ANGEL</th>
+                        <th class="border-top-0">APPROVED</th>
+                        <th class="border-top-0">ACTION</th>
+                     </tr>
+                     </thead>
+                     <tbody>
+                     {% for user in inv_data["data"] %}
+                     <tr class="load_info" data-id="{{user["email"]}}" data-toggle="modal" data-target="#exampleModal">
+                     {% if user["profile_pic_link"] %}
+                     <td class="font-medium"><img src={{ user["profile_pic_link"] }} alt={{ user["first_name"] }} width="40" height="40"></td>
+                     {% else %}
+                     <td class="font-medium"><img src="../static/images/Google Fonts Downloads/{{user["first_name"][0].upper()}}.png" alt={{ user["first_name"] }} width="40" height="40"></td>
+                     {% endif %}
+                     <td class="font-medium">{{user["first_name"]}}</td>
+                     <td class="font-medium">{{user["created"]}}</span></td>
+                     <td class="font-medium">{{user["location"]}}</td>
+                     {% if user["email_confirmed"] == False %}
+                     <td><span class="label label-danger label-rounded">{{user["email_confirmed"]}}</span></td>
+                     {% else %}
+                     <td><span class="label label-success label-rounded">{{user["email_confirmed"]}}</span></td>
+                     {% endif %}
+                     {% if user["angel"] == False %}
+                     <td><span class="label label-danger label-rounded">{{user["angel"]}}</span></td>
+                     {% elif user["angel"] == True %}
+                     <td><span class="label label-success label-rounded">{{user["angel"]}}</span></td>
+                     {% else %}
+                     <td><span class="label label-info label-rounded">{{user["angel"]}}</span></td>
+                     {% endif %}
+                     {% if user["approved"] == False %}
+                     <td><span class="label label-danger label-rounded">{{user["approved"]}}</span></td>
+                     {% else %}
+                     <td><span class="label label-success label-rounded">{{user["approved"]}}</span></td>
+                     {% endif %}
+                     <td>
+                        {% if user["approved"] == False %}
+                        <form  method="POST">
+                           <input type="hidden" name="approve" value="{{ user["email"] }}">
+                           <input class="btn btn-primary" type="submit" onclick="return confirm('Are you sure you want to approve this user?')" value="Approve">
+                        </form>
+                        {% else %}
+                        <form  method="POST">
+                           <input type="hidden" name="disapprove" value="{{ user["email"] }}">
+                           <input class="btn btn-danger" type="submit" onclick="return confirm('Are you sure you want to approve this user?')" value="Disapprove">
+                        </form>
+                        {% endif %}
+                     </td>
+                     </tr>
+                     {% endfor %}
+                     </tbody>
+                  </table>
+                  <br>
+                  <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                     <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                           <div class="modal-header">
+                              <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+                              <h4 class="modal-title font-weight-bold" text-align="center" id="myModalLabel">INVESTOR</h4>
+                           </div>
+                           <div class="modal-body">
+                              <center>
+                                 <img src="" name="aboutme" id="inv_img" width="140" height="140" border="0" class="img-circle"></a>
+                                 <h3 id="inv_name" class="media-heading"></h3>
+                                 <h5 id="inv_loc"></h5>
+                                 <span id="inv_ec" class="label"></span>
+                                 <span id="inv_appr" class="label"></span>
+                                 <span id="inv_angel" class="label"></span>
+                              </center>
+                              <hr>
+                              <center>
+                                 <div class="card border-dark mb-3">
+                                    <div class="card-header font-weight-bold">PROFILE</div>
+                                    <div class="card-body text-dark">
+                                       <h5 class="card-title font-weight-bold">Email: <small id="inv_email"></small> </h5>
+                                       <h5 class="card-title font-weight-bold">Deals: <small id="inv_deals"></small> </h5>
+                                       <h5 class="card-title font-weight-bold">Accreditation: <small id="inv_accreditation"></small> </h5>
+                                       <h5 class="card-title font-weight-bold">Syndicate: <small id="inv_syndicate"></small> </h5>
+                                       <h5 class="card-title font-weight-bold">Sectors: <small id="inv_sectors"></small> </h5>
+                                    </div>
+                                    <div id="inv_created" class="card-footer"></div>
                                  </div>
-                                 <div class="modal-body">
-                                    <center>
-                                       <img src="" name="aboutme" id="inv_img" width="140" height="140" border="0" class="img-circle"></a>
-                                       <h3 id="inv_name" class="media-heading"></h3>
-                                       <h5 id="inv_loc"></h5>
-                                       <span id="inv_ec" class="label"></span>
-                                       <span id="inv_appr" class="label"></span>
-                                       <span id="inv_angel" class="label"></span>
-                                    </center>
-                                    <hr>
-                                    <center>
-                                       <div class="card border-dark mb-3">
-                                          <div class="card-header font-weight-bold">PROFILE</div>
-                                          <div class="card-body text-dark">
-                                             <h5 class="card-title font-weight-bold">Email: <small id="inv_email"></small> </h5>
-                                             <h5 class="card-title font-weight-bold">Deals: <small id="inv_deals"></small> </h5>
-                                             <h5 class="card-title font-weight-bold">Accreditation: <small id="inv_accreditation"></small> </h5>
-                                             <h5 class="card-title font-weight-bold">Syndicate: <small id="inv_syndicate"></small> </h5>
-                                             <h5 class="card-title font-weight-bold">Sectors: <small id="inv_sectors"></small> </h5>
-                                          </div>
-                                          <div id="inv_created" class="card-footer"></div>
-                                       </div>
-                                       <div class="card border-dark mb-3">
-                                          <div class="card-header font-weight-bold">Bio</div>
-                                          <div class="card-body text-dark">
-                                             <p id="inv_bio" class="card-text"></p>
-                                          </div>
-                                       </div>
-                                       <br>
-                                    </center>
+                                 <div class="card border-dark mb-3">
+                                    <div class="card-header font-weight-bold">Bio</div>
+                                    <div class="card-body text-dark">
+                                       <p id="inv_bio" class="card-text"></p>
+                                    </div>
                                  </div>
-                                 <div class="modal-footer">
-                                    <center>
-                                       <button type="button" class="btn btn-default font-weight-bold" data-dismiss="modal">AngelFund AI</button>
-                                    </center>
-                                 </div>
-                              </div>
+                                 <br>
+                              </center>
+                           </div>
+                           <div class="modal-footer">
+                              <center>
+                                 <button type="button" class="btn btn-default font-weight-bold" data-dismiss="modal">AngelFund AI</button>
+                              </center>
                            </div>
                         </div>
-                        <script>
-                           $('#myModal').on('shown.bs.modal', function () {
-                           $('#myInput').trigger('focus')})
-                           
-                           
-                           
-                           
-                           $('.load_info').click(function(){
+                     </div>
+                  </div>
+                  <script>
+                     $('#myModal').on('shown.bs.modal', function () {
+                        $('#myInput').trigger('focus')})
+
+
+
+
+                     $('.load_info').click(function(){
                                 var element = $(this);
                                 var email = element.attr('data-id');
                                 $.ajax({
-                             url: '/admin/get-single-investor',
-                             data: {'email': email},
-                             method: 'POST',
-                             success: function(data) {
-                               console.log(data);
-                                
-                           
-                           
-                           
-                           
-                           
-                           
-                                if (data["data"]["profile_pic_link"]) {
-                                   $('#inv_img').attr('src', data["data"]["profile_pic_link"])
-                                } else {
-                                   $('#inv_img').attr('src', "../static/images/Google Fonts Downloads/"+data["data"]["first_name"][0].toUpperCase()+".png" )
-                                }
-                           
-                                
-                           
-                                
-                                if (data["data"]["email_confirmed"]) {
-                                   $('#inv_ec').html("Email Confirmed").addClass("label-success")
-                                } else {
-                                   $('#inv_ec').html("Email not confirmed").addClass("label-danger")
-                                }
-                           
-                                if (data["data"]["approved"]) {
-                                   $('#inv_appr').html("Approved").addClass("label-success")
-                                } else {
-                                   $('#inv_appr').html("Not Approved").addClass("label-danger")
-                                }
-                           
-                                if (data["data"]["angel"] == true) {
-                                $('#inv_angel').html("Angel").addClass("label-info")
-                                } else {
-                                 $('#inv_angel').html("Not Angel").addClass("label-danger")
-                                }
-                           
-                           
-                                $('#inv_name').html(data["data"]["first_name"] +" "+ data["data"]["last_name"])
-                                $('#inv_loc').html(data["data"]["location"])
-                                $('#inv_bio').html(data["data"]["bio"])
-                                $('#inv_created').html(data["data"]["created"])
-                                $('#inv_accreditation').html(data["data"]["accreditation"])
-                                $('#inv_syndicate').html(data["data"]["syndicate"])
-                                $('#inv_deals').html(data["data"]["deals"])
-                                $('#inv_sectors').html(data["data"]["sectors"])
-                                $('#inv_email').html(data["data"]["email"])
-                                
+                                   url: '/admin/get-single-investor',
+                                   data: {'email': email},
+                                   method: 'POST',
+                                   success: function(data) {
+                                      console.log(data);
+
+
+
+
+
+
+
+                                      if (data["data"]["profile_pic_link"]) {
+                                         $('#inv_img').attr('src', data["data"]["profile_pic_link"])
+                                      } else {
+                                         $('#inv_img').attr('src', "../static/images/Google Fonts Downloads/"+data["data"]["first_name"][0].toUpperCase()+".png" )
+                                      }
+
+
+
+
+                                      if (data["data"]["email_confirmed"]) {
+                                         $('#inv_ec').html("Email Confirmed").addClass("label-success")
+                                      } else {
+                                         $('#inv_ec').html("Email not confirmed").addClass("label-danger")
+                                      }
+
+                                      if (data["data"]["approved"]) {
+                                         $('#inv_appr').html("Approved").addClass("label-success")
+                                      } else {
+                                         $('#inv_appr').html("Not Approved").addClass("label-danger")
+                                      }
+
+                                      if (data["data"]["angel"] == true) {
+                                         $('#inv_angel').html("Angel").addClass("label-info")
+                                      } else {
+                                         $('#inv_angel').html("Not Angel").addClass("label-danger")
+                                      }
+
+
+                                      $('#inv_name').html(data["data"]["first_name"] +" "+ data["data"]["last_name"])
+                                      $('#inv_loc').html(data["data"]["location"])
+                                      $('#inv_bio').html(data["data"]["bio"])
+                                      $('#inv_created').html(data["data"]["created"])
+                                      $('#inv_accreditation').html(data["data"]["accreditation"])
+                                      $('#inv_syndicate').html(data["data"]["syndicate"])
+                                      $('#inv_deals').html(data["data"]["deals"])
+                                      $('#inv_sectors').html(data["data"]["sectors"])
+                                      $('#inv_email').html(data["data"]["email"])
+
+                                   }
+
+                                });
+
                              }
-                                   
-                           });
-                           
-                           }
-                           );
-                           
-                        </script>
-                     </div>
-                  </div>
+                     );
+
+                  </script>
                </div>
             </div>
-            {% endif %}
          </div>
-         {% for i in range(1, (inv_data["total_count_inv"]//10)+2) %}
-         <div class="pagination pagination-centered">
-            <form  method="POST">
-               <button class="btn btn-primary" type="submit">{{i}}</button>
-               <input type="hidden" name="page" value="{{ i-1 }}">
-            </form>
-         </div>
-         {% endfor %}
-         <footer class="footer text-center">
-            All Rights Reserved by AngelFund AI.
-         </footer>
       </div>
-      <script src="../static/jquery/dist/jquery.min.js"></script>
-      <script src="../static/popper.js/dist/umd/popper.min.js"></script>
-      <script src="../static/bootstrap/dist/js/bootstrap.min.js"></script>
-      <script src="../static/extra-libs/sparkline/sparkline.js"></script>
-      <script src="../static/js/waves.js"></script>
-      <script src="../static/js/sidebarmenu.js"></script>
-      <script src="../static/js/custom.min.js"></script>
-      <script src="../static/chartist/dist/chartist.min.js"></script>
-      <script src="../static/chartist-plugin-tooltips/dist/chartist-plugin-tooltip.min.js"></script>
-      <script src="../static/js/pages/dashboards/dashboard1.js"></script>
-      <script src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script>
-      <script>
-         $(document).ready( function () {
-         $('#investor_table').DataTable();
-         } );
-      </script>
-   </body>
+      {% endif %}
+   </div>
+   {% for i in range(1, (inv_data["total_count_inv"]//10)+2) %}
+   <div class="pagination pagination-centered">
+      <form  method="POST">
+         <button class="btn btn-primary" type="submit">{{i}}</button>
+         <input type="hidden" name="page" value="{{ i-1 }}">
+      </form>
+   </div>
+   {% endfor %}
+   <footer class="footer text-center">
+      All Rights Reserved by AngelFund AI.
+   </footer>
+</div>
+<script src="../static/jquery/dist/jquery.min.js"></script>
+<script src="../static/popper.js/dist/umd/popper.min.js"></script>
+<script src="../static/bootstrap/dist/js/bootstrap.min.js"></script>
+<script src="../static/extra-libs/sparkline/sparkline.js"></script>
+<script src="../static/js/waves.js"></script>
+<script src="../static/js/sidebarmenu.js"></script>
+<script src="../static/js/custom.min.js"></script>
+<script src="../static/chartist/dist/chartist.min.js"></script>
+<script src="../static/chartist-plugin-tooltips/dist/chartist-plugin-tooltip.min.js"></script>
+<script src="../static/js/pages/dashboards/dashboard1.js"></script>
+<script src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script>
+<script>
+   $(document).ready( function () {
+      $('#investor_table').DataTable();
+   } );
+</script>
+</body>
 </html>
