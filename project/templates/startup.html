@@ -10,7 +10,6 @@
    <title>AngelFund Admin Panel</title>
    <link href="../static/chartist/dist/chartist.min.css" rel="stylesheet">
    <link href="../static/css/style.min.css" rel="stylesheet">
-   <link href="https://cdn.datatables.net/1.10.20/css/jquery.dataTables.min.css">
    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
    <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
@@ -285,9 +284,6 @@
                      $('#myModal').on('shown.bs.modal', function () {
                         $('#myInput').trigger('focus')})
 
-
-
-
                      $('.load_info').click(function(){
                                 var element = $(this);
                                 var email = element.attr('data-id');
@@ -297,12 +293,6 @@
                                    method: 'POST',
                                    success: function(data) {
                                       console.log(data);
-
-
-
-
-
-
 
                                       if (data["data"]["profile_pic_link"]) {
                                          $('#str_img').attr('src', data["data"]["profile_pic_link"])
@@ -367,6 +357,7 @@
       </form>
    </div>
    {% endfor %}
+
    <footer class="footer text-center">
       All Rights Reserved by AngelFund AI.
    </footer>
@@ -381,11 +372,5 @@
 <script src="../static/chartist/dist/chartist.min.js"></script>
 <script src="../static/chartist-plugin-tooltips/dist/chartist-plugin-tooltip.min.js"></script>
 <script src="../static/js/pages/dashboards/dashboard1.js"></script>
-<script src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js" async=true></script>
-<script>
-   $(document).ready( function () {
-      $('#startup_table').DataTable();
-   } );
-</script>
 </body>
 </html>

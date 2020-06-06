@@ -1,7 +1,9 @@
+import threading
 from werkzeug.security import check_password_hash
 from project.models import Investor, Startup, AdminPortal
 from common_utilities.file_processing import inv_file_process
 from flask_login import login_required, login_user, logout_user
+from common_utilities.wait_list_completed import wait_list_over
 from flask import Blueprint, render_template, request, redirect, url_for, jsonify, session
 from project.admin.admin_serializer import InvestorSerialize, StartupSerialize, StartupSerializeSingle, InvestorSerializeSingle
 
@@ -89,7 +91,6 @@ def investor_account():
                 return redirect(url_for('admin.investor_account'))
 
         elif request.form.get('approve'):
-            print(request.form)
             user_email = request.form.get('approve')
             if not user_email:
                 return redirect(url_for('admin.investor_account'))
@@ -100,6 +101,10 @@ def investor_account():
 
             user_obj.approved = True
             user_obj.save()
+
+            email, first_name = user_obj.email, user_obj.first_name
+            thread = threading.Thread(target=wait_list_over, args=(email, first_name,))
+            thread.start()
 
         elif request.form.get('disapprove'):
             user_email = request.form.get('disapprove')
@@ -207,6 +212,10 @@ def startup_account():
 
             user_obj.approved = True
             user_obj.save()
+
+            email, first_name = user_obj.email, user_obj.first_name
+            thread = threading.Thread(target=wait_list_over, args=(email, first_name,))
+            thread.start()
 
         elif request.form.get('disapprove'):
             user_email = request.form.get('disapprove')

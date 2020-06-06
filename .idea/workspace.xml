@@ -2,10 +2,11 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="38c032e6-a1c9-48c3-acaf-0931239f39c1" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/admin.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/admin.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app.py" beforeDir="false" afterPath="$PROJECT_DIR$/app.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common_utilities/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/common_utilities/__init__.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/project/admin/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/project/admin/views.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/project/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/project/models.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/project/templates/investor.html" beforeDir="false" afterPath="$PROJECT_DIR$/project/templates/investor.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/project/templates/startup.html" beforeDir="false" afterPath="$PROJECT_DIR$/project/templates/startup.html" afterDir="false" />
     </list>
@@ -17,8 +18,8 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
-        <option value="Python Script" />
         <option value="HTML File" />
+        <option value="Python Script" />
       </list>
     </option>
   </component>
@@ -34,6 +35,7 @@
   <component name="PropertiesComponent">
     <property name="ASKED_ADD_EXTERNAL_FILES" value="true" />
     <property name="DefaultHtmlFileTemplate" value="HTML File" />
+    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
@@ -76,7 +78,16 @@
       <workItem from="1587345820277" duration="270000" />
       <workItem from="1587521342212" duration="4234000" />
       <workItem from="1587540543610" duration="1103000" />
-      <workItem from="1587542251422" duration="3800000" />
+      <workItem from="1587542251422" duration="3887000" />
+      <workItem from="1588973487128" duration="2352000" />
+      <workItem from="1589761796240" duration="1000" />
+      <workItem from="1589814126672" duration="30000" />
+      <workItem from="1590482584399" duration="7498000" />
+      <workItem from="1590873197076" duration="1611000" />
+      <workItem from="1590875956895" duration="536000" />
+      <workItem from="1590960334535" duration="1156000" />
+      <workItem from="1590996097218" duration="750000" />
+      <workItem from="1591407709388" duration="2957000" />
     </task>
     <servers />
   </component>
