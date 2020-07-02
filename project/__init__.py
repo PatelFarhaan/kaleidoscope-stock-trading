@@ -13,7 +13,7 @@ from flask_marshmallow import Marshmallow
 #<==================================================================================================>
 app = Flask(__name__)
 app.config['SECRET_KEY'] = CONSTANT.SECRET_KEY.value
-app.config['MONGODB_SETTINGS'] = {'host': CONSTANT.PRIMARY_DB_CLUSTER.value}
+app.config['MONGODB_SETTINGS'] = {'host': CONSTANT.TEST_DB_CLUSTER.value}
 
 db = MongoEngine(app)
 ma = Marshmallow(app)

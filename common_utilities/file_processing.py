@@ -33,7 +33,7 @@ def inv_file_process(file_obj, is_inv):
     except:
         return False
 
-    remote_mongo_uri = CONSTANT.PRIMARY_DB_CLUSTER.value
+    remote_mongo_uri = CONSTANT.TEST_DB_CLUSTER.value
     mongo_client = MongoClient(remote_mongo_uri)
     db = mongo_client.admin
 
