@@ -1,3 +1,6 @@
+#<==================================================================================================>
+#                                         IMPORTS
+#<==================================================================================================>
 from flask import Flask
 from flask_login import LoginManager
 from common_utilities import CONSTANT
@@ -5,9 +8,9 @@ from flask_mongoengine import MongoEngine
 from flask_marshmallow import Marshmallow
 
 
-#< !-- == == == == == == == == == == == == == == == == == == == == == == == == == == == == == == == -->
-#                                 < !-- Admin Panel Config -->
-#< !-- == == == == == == == == == == == == == == == == == == == == == == == == == == == == == == == -->
+#<==================================================================================================>
+#                                     ADMIN PANEL CONFIG
+#<==================================================================================================>
 app = Flask(__name__)
 app.config['SECRET_KEY'] = CONSTANT.SECRET_KEY.value
 app.config['MONGODB_SETTINGS'] = {'host': CONSTANT.PRIMARY_DB_CLUSTER.value}
@@ -19,9 +22,9 @@ login_manager = LoginManager(app)
 login_manager.login_view = "admin.login"
 
 
-#< !-- == == == == == == == == == == == == == == == == == == == == == == == == == == == == == == == -->
-#                                 < !-- Admin Panel Blueprint -->
-#< !-- == == == == == == == == == == == == == == == == == == == == == == == == == == == == == == == -->
+#<==================================================================================================>
+#                                    ADMIN PANEL BLUEPRINT
+#<==================================================================================================>
 from project.admin.views import admin_blueprint
 from project.error.error_handler import errorpage_blueprint
 

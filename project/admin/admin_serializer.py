@@ -10,7 +10,7 @@ class InvestorSerialize(ma.Schema):
 
     class Meta:
         fields = ("angel", "email", "created", "location", "approved", "first_name",
-                  "email_confirmed", "profile_pic_link")
+                  "last_name", "email_confirmed", "profile_pic_link")
 
 
 #<==================================================================================================>
@@ -21,7 +21,7 @@ class StartupSerialize(ma.Schema):
 
     class Meta:
         fields = ("email", "company_name", "created", "approved", "first_name", "email_confirmed",
-                  "profile_pic_link")
+                  "last_name", "profile_pic_link")
 
 
 # <==================================================================================================>
@@ -33,7 +33,7 @@ class InvestorSerializeSingle(ma.Schema):
     class Meta:
         fields = ("deals", "angel", "created", "location", "approved", "first_name",
                   "email_confirmed", "bio", "sectors", "syndicate", "accreditation",
-                  "profile_pic_link", "last_name ", "email")
+                  "profile_pic_link", "last_name ", "email", "connected")
 
 
 
@@ -46,4 +46,4 @@ class StartupSerializeSingle(ma.Schema):
         fields = ("bio", "sectors", "raised", "progress", "position", "location", "slide_deck",
                   "round_size", "company_link", "company_name", "num_team_members", "startup_pitch",
                   "profile_pic_link", "raised_capital_desc", "approved", "email_confirmed", "last_name",
-                  "first_name", "email", "created")
+                  "first_name", "email", "created", "connected")

@@ -12,7 +12,6 @@ from werkzeug.security import generate_password_hash
 @click.option('--email', '-e', type=str, help="Enter the username of the admin")
 @click.option('--password', '-p', type=str, help="Enter the password of the admin")
 def add_admin(email, password):
-    AdminPortal.objects.delete()
     req = {
         "email": email,
         "password": generate_password_hash(password),

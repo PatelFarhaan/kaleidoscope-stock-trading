@@ -3,9 +3,11 @@ from werkzeug.security import check_password_hash
 from project.models import Investor, Startup, AdminPortal
 from common_utilities.file_processing import inv_file_process
 from flask_login import login_required, login_user, logout_user
-from common_utilities.wait_list_completed import wait_list_over
+from common_utilities.wait_list_completed_startup import wait_list_over_str
+from common_utilities.wait_list_completed_investor import wait_list_over_inv
 from flask import Blueprint, render_template, request, redirect, url_for, jsonify, session
 from project.admin.admin_serializer import InvestorSerialize, StartupSerialize, StartupSerializeSingle, InvestorSerializeSingle
+
 
 admin_blueprint = Blueprint('admin', '__name__', template_folder='templates', static_folder='static', url_prefix='/admin')
 
@@ -103,7 +105,7 @@ def investor_account():
             user_obj.save()
 
             email, first_name = user_obj.email, user_obj.first_name
-            thread = threading.Thread(target=wait_list_over, args=(email, first_name,))
+            thread = threading.Thread(target=wait_list_over_inv, args=(email, first_name,))
             thread.start()
 
         elif request.form.get('disapprove'):
@@ -214,7 +216,7 @@ def startup_account():
             user_obj.save()
 
             email, first_name = user_obj.email, user_obj.first_name
-            thread = threading.Thread(target=wait_list_over, args=(email, first_name,))
+            thread = threading.Thread(target=wait_list_over_str, args=(email, first_name,))
             thread.start()
 
         elif request.form.get('disapprove'):

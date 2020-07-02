@@ -1,16 +1,19 @@
+#<==================================================================================================>
+#                                      IMPORTS
+#<==================================================================================================>
 import sys
-sys.path.append("../")
 import os
 import csv
 import uuid
 import shutil
 import pandas as pd
+sys.path.append("../")
 from pymongo import MongoClient
 from common_utilities import CONSTANT
 
 
 #<==================================================================================================>
-#                              FILE PROCESSING
+#                                  FILE PROCESSING
 #<==================================================================================================>
 def inv_file_process(file_obj, is_inv):
     file_name = file_obj.filename.replace(' ', '').split('.', 1)[0]

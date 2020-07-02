@@ -2,9 +2,14 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="38c032e6-a1c9-48c3-acaf-0931239f39c1" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/common_utilities/wait_list_completed_investor.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app.py" beforeDir="false" afterPath="$PROJECT_DIR$/app.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/common_utilities/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/common_utilities/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common_utilities/create_admin.py" beforeDir="false" afterPath="$PROJECT_DIR$/common_utilities/create_admin.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common_utilities/file_processing.py" beforeDir="false" afterPath="$PROJECT_DIR$/common_utilities/file_processing.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common_utilities/wait_list_completed.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/project/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/project/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/project/admin/admin_serializer.py" beforeDir="false" afterPath="$PROJECT_DIR$/project/admin/admin_serializer.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/project/admin/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/project/admin/views.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/project/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/project/models.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/project/templates/investor.html" beforeDir="false" afterPath="$PROJECT_DIR$/project/templates/investor.html" afterDir="false" />
@@ -45,6 +50,7 @@
     <property name="node.js.path.for.package.tslint" value="project" />
     <property name="node.js.selected.package.eslint" value="(autodetect)" />
     <property name="node.js.selected.package.tslint" value="(autodetect)" />
+    <property name="nodejs_package_manager_path" value="npm" />
     <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
   </component>
   <component name="RecentsManager">
@@ -58,6 +64,35 @@
       <recent name="$PROJECT_DIR$/project/static/css" />
       <recent name="$PROJECT_DIR$/project/templates" />
     </key>
+  </component>
+  <component name="RunManager">
+    <configuration name="test" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="admin" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$APPLICATION_CONFIG_DIR$/scratches" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="$APPLICATION_CONFIG_DIR$/scratches/test.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Python.test" />
+      </list>
+    </recent_temporary>
   </component>
   <component name="SvnConfiguration">
     <configuration />
@@ -87,7 +122,23 @@
       <workItem from="1590875956895" duration="536000" />
       <workItem from="1590960334535" duration="1156000" />
       <workItem from="1590996097218" duration="750000" />
-      <workItem from="1591407709388" duration="2957000" />
+      <workItem from="1591407709388" duration="3036000" />
+      <workItem from="1591413158421" duration="429000" />
+      <workItem from="1593109924407" duration="243000" />
+      <workItem from="1593133948861" duration="411000" />
+      <workItem from="1593134733873" duration="2426000" />
+      <workItem from="1593198022011" duration="592000" />
+      <workItem from="1593224763112" duration="153000" />
+      <workItem from="1593309696551" duration="5593000" />
+      <workItem from="1593464576030" duration="341000" />
+      <workItem from="1593479014676" duration="289000" />
+      <workItem from="1593493021020" duration="801000" />
+      <workItem from="1593552351069" duration="744000" />
+      <workItem from="1593624107070" duration="2661000" />
+      <workItem from="1593659601448" duration="972000" />
+      <workItem from="1593661246473" duration="1518000" />
+      <workItem from="1593711507889" duration="9000" />
+      <workItem from="1593722235001" duration="3860000" />
     </task>
     <servers />
   </component>
@@ -115,6 +166,22 @@
       <screen x="0" y="23" width="1440" height="877" />
     </state>
     <state x="507" y="222" key="FileChooserDialogImpl/0.23.1440.877@0.23.1440.877" timestamp="1587544656255" />
+    <state width="1398" height="71" key="GridCell.Tab.0.bottom" timestamp="1593326545487">
+      <screen x="0" y="23" width="1440" height="877" />
+    </state>
+    <state width="1398" height="71" key="GridCell.Tab.0.bottom/1440.33.834.1146/0.23.1440.877@0.23.1440.877" timestamp="1593326545487" />
+    <state width="1398" height="71" key="GridCell.Tab.0.center" timestamp="1593326545486">
+      <screen x="0" y="23" width="1440" height="877" />
+    </state>
+    <state width="1398" height="71" key="GridCell.Tab.0.center/1440.33.834.1146/0.23.1440.877@0.23.1440.877" timestamp="1593326545486" />
+    <state width="1398" height="71" key="GridCell.Tab.0.left" timestamp="1593326545485">
+      <screen x="0" y="23" width="1440" height="877" />
+    </state>
+    <state width="1398" height="71" key="GridCell.Tab.0.left/1440.33.834.1146/0.23.1440.877@0.23.1440.877" timestamp="1593326545485" />
+    <state width="1398" height="71" key="GridCell.Tab.0.right" timestamp="1593326545487">
+      <screen x="0" y="23" width="1440" height="877" />
+    </state>
+    <state width="1398" height="71" key="GridCell.Tab.0.right/1440.33.834.1146/0.23.1440.877@0.23.1440.877" timestamp="1593326545487" />
     <state x="221" y="100" key="SettingsEditor" timestamp="1587545320946">
       <screen x="0" y="23" width="1440" height="877" />
     </state>
@@ -124,5 +191,8 @@
       <screen x="1440" y="-98" width="1194" height="811" />
     </state>
     <state x="1592" y="37" width="670" height="676" key="search.everywhere.popup/1440.-98.1194.811/0.23.1440.877@1440.-98.1194.811" timestamp="1587329277717" />
+  </component>
+  <component name="com.intellij.coverage.CoverageDataManagerImpl">
+    <SUITE FILE_PATH="coverage/admin$test.coverage" NAME="test Coverage Results" MODIFIED="1593323915770" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$APPLICATION_CONFIG_DIR$/scratches" />
   </component>
 </project>
