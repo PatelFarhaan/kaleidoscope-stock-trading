@@ -9,7 +9,7 @@ pipelines:
           - pip
         script:
           - apt-get update
-          - python3 -m pip install --upgrade --force pip
+          - pip install --upgrade pip
           - pip3 install -r requirements.txt
           - apt-get install -y zip
           - zip -r admin.zip .
