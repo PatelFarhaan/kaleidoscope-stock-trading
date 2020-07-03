@@ -6,7 +6,8 @@ from flask_login import login_required, login_user, logout_user
 from common_utilities.wait_list_completed_startup import wait_list_over_str
 from common_utilities.wait_list_completed_investor import wait_list_over_inv
 from flask import Blueprint, render_template, request, redirect, url_for, jsonify, session
-from project.admin.admin_serializer import InvestorSerialize, StartupSerialize, StartupSerializeSingle, InvestorSerializeSingle
+from project.admin.admin_serializer import InvestorSerialize, StartupSerialize, StartupSerializeSingle,\
+                                           InvestorSerializeSingle
 
 
 admin_blueprint = Blueprint('admin', '__name__', template_folder='templates', static_folder='static', url_prefix='/admin')
