@@ -50,7 +50,7 @@
 <body>
 
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
-    <a class="navbar-brand" href="{{url_for('admin.investor_account')}}" style="color: #4c32e9">ANGELFUND</a>
+    <a class="navbar-brand" href="{{ url_for('admin.investor_account') }}" style="color: #4c32e9">ANGELFUND</a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false"
             aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
@@ -58,10 +58,10 @@
     <div class="collapse navbar-collapse" id="navbarNav">
         <ul class="navbar-nav">
             <li class="nav-item active">
-                <a class="nav-link" href="{{url_for('admin.investor_account')}}">Investors</a>
+                <a class="nav-link" href="{{ url_for('admin.investor_account') }}">Investors</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="{{url_for('admin.startup_account')}}">Startups</a>
+                <a class="nav-link" href="{{ url_for('admin.startup_account') }}">Startups</a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" href="#">Analytics</a>
@@ -79,14 +79,14 @@
 </div>
 <br>
 {% if session["success"] %}
-<div class="alert alert-success" role="alert">
-    {{ session["success"] }}
-</div>
+    <div class="alert alert-success" role="alert">
+        {{ session["success"] }}
+    </div>
 {% endif %}
 {% if session["errors"] %}
-<div class="alert alert-danger" role="alert">
-    {{ session["errors"] }}
-</div>
+    <div class="alert alert-danger" role="alert">
+        {{ session["errors"] }}
+    </div>
 {% endif %}
 <h3 align="center">
     DASHBOARD FOR INVESTOR'S
@@ -98,248 +98,272 @@
         {% if inv_data["result"] %}
 
 
-        <form method="POST" enctype="multipart/form-data">
-            <div class="form-group">
-                <label class="control-label">Investor Data</label>
-                <div class="custom-file">
-                    <input type="file" class="custom-file-input" name="inv_csv" aria-describedby="inputGroupFileAddon01">
-                    <label class="custom-file-label" for="inputGroupFile01">Choose file</label>
-                </div>
-                <button type="submit" class="btn btn-primary">Submit</button>
-            </div>
-        </form>
-
-        <br>
-        <script>
-            // Add the following code if you want the name of the file appear on select
-            $(".custom-file-input").on("change", function () {
-                var fileName = $(this).val().split("\\").pop();
-                $(this).siblings(".custom-file-label").addClass("selected").html(fileName);
-            });
-        </script>
-
-
-        <div class="row">
-            <div class="col-12">
-                <div class="card">
-                    <div class="card-body">
-                        <h4 class="card-title font-weight-bold text-primary">INVESTOR'S PROFILE</h4>
+            <form method="POST" enctype="multipart/form-data">
+                <div class="form-group">
+                    <label class="control-label">Investor Data</label>
+                    <div class="custom-file">
+                        <input type="file" class="custom-file-input" name="inv_csv" aria-describedby="inputGroupFileAddon01">
+                        <label class="custom-file-label" for="inputGroupFile01">Choose file</label>
                     </div>
-                    <div class="table-responsive">
-                        <table class="table table-hover table-bordered" id="investor_table">
-                            <thead class="thead-dark">
-                            <tr>
-                                <th class="border-top-0">PROFILE</th>
-                                <th class="border-top-0">FN</th>
-                                <th class="border-top-0">LN</th>
-                                <th class="border-top-0">CREATED</th>
-                                <th class="border-top-0">LOCATION</th>
-                                <th class="border-top-0">EC</th>
-                                <th class="border-top-0">ANGEL</th>
-                                <th class="border-top-0">APPROVED</th>
-                                <th class="border-top-0">ACTION</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            {% for user in inv_data["data"] %}
-                            <tr class="load_info" data-id="{{user['email']}}" data-toggle="modal" data-target="#exampleModal">
-                                {% if user["profile_pic_link"] %}
-                                <td class="font-medium"><img src={{ user['profile_pic_link'] }} alt={{ user["first_name"] }} width="40" height="40">
-                                </td>
-                                {% else %}
-                                <td class="font-medium"><img src="../static/images/Google Fonts Downloads/{{user['first_name'][0].upper()}}.png"
-                                                             alt={{ user['first_name'] }} width="40" height="40">
-                                </td>
-                                {% endif %}
-                                <td class="font-medium">{{user["first_name"]}}</td>
-                                <td class="font-medium">{{user["last_name"]}}</td>
-                                <td class="font-medium">{{user["created"]}}</span></td>
-                                <td class="font-medium">{{user["location"]}}</td>
-                                {% if user["email_confirmed"] == False %}
-                                <td><span class="label label-danger label-rounded">{{user["email_confirmed"]}}</span></td>
-                                {% else %}
-                                <td><span class="label label-success label-rounded">{{user["email_confirmed"]}}</span></td>
-                                {% endif %}
-                                {% if user["angel"] == False %}
-                                <td><span class="label label-danger label-rounded">{{user["angel"]}}</span></td>
-                                {% elif user["angel"] == True %}
-                                <td><span class="label label-success label-rounded">{{user["angel"]}}</span></td>
-                                {% else %}
-                                <td><span class="label label-info label-rounded">{{user["angel"]}}</span></td>
-                                {% endif %}
-                                {% if user["approved"] == False %}
-                                <td><span class="label label-danger label-rounded">{{user["approved"]}}</span></td>
-                                {% else %}
-                                <td><span class="label label-success label-rounded">{{user["approved"]}}</span></td>
-                                {% endif %}
-                                <td>
-                                    {% if user["approved"] == False %}
-                                    <form method="POST">
-                                        <input type="hidden" name="approve" value="{{ user[" email"] }}">
-                                        <input class="btn btn-primary" type="submit"
-                                               onclick="return confirm('Are you sure you want to approve this user?')" value="Approve">
-                                    </form>
-                                    {% else %}
-                                    <form method="POST">
-                                        <input type="hidden" name="disapprove" value="{{ user[" email"] }}">
-                                        <input class="btn btn-danger" type="submit"
-                                               onclick="return confirm('Are you sure you want to approve this user?')" value="Disapprove">
-                                    </form>
-                                    {% endif %}
-                                </td>
-                            </tr>
-                            {% endfor %}
-                            </tbody>
-                        </table>
-                        <br>
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                </div>
+            </form>
 
-                        <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                            <div class="modal-dialog" role="document">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
-                                        <h4 class="modal-title font-weight-bold" text-align="center" id="myModalLabel">INVESTOR</h4>
-                                    </div>
-                                    <div class="modal-body">
-                                        <center>
-                                            <img src="" name="aboutme" id="inv_img" width="140" height="140" border="0" class="img-circle"></a>
-                                            <h3 id="inv_name" class="media-heading"></h3>
-                                            <h5 id="inv_loc"></h5>
-                                            <span id="inv_ec" class="label"></span>
-                                            <span id="inv_appr" class="label"></span>
-                                            <span id="inv_angel" class="label"></span>
-                                        </center>
-                                        <hr>
-                                        <center>
-                                            <div class="card border-dark mb-3">
-                                                <div class="card-header font-weight-bold">PROFILE</div>
-                                                <div class="card-body text-dark">
-                                                    <h5 class="card-title font-weight-bold">Email: <small id="inv_email"></small></h5>
-                                                    <h5 class="card-title font-weight-bold">Deals: <small id="inv_deals"></small></h5>
-                                                    <h5 class="card-title font-weight-bold">Accreditation: <small id="inv_accreditation"></small></h5>
-                                                    <h5 class="card-title font-weight-bold">Syndicate: <small id="inv_syndicate"></small></h5>
-                                                    <h5 class="card-title font-weight-bold">Sectors: <span><br></span><small id="inv_sectors"></small>
-                                                    </h5>
+            <br>
+            <script>
+                // Add the following code if you want the name of the file appear on select
+                $(".custom-file-input").on("change", function () {
+                    var fileName = $(this).val().split("\\").pop();
+                    $(this).siblings(".custom-file-label").addClass("selected").html(fileName);
+                });
+            </script>
+
+            <div class="row">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-body">
+                            <h4 class="card-title text-primary">INVESTOR'S PROFILE</h4>
+                        </div>
+                        <div class="table-responsive">
+                            <table class="table table-hover table-bordered" id="investor_table">
+                                <thead class="thead-dark">
+                                <tr>
+                                    <th class="border-top-0">CHECK</th>
+                                    <th class="border-top-0">PROFILE</th>
+                                    <th class="border-top-0">FN</th>
+                                    <th class="border-top-0">LN</th>
+                                    <th class="border-top-0">CREATED</th>
+                                    <th class="border-top-0">LOCATION</th>
+                                    <th class="border-top-0">EC</th>
+                                    <th class="border-top-0">ANGEL</th>
+                                    <th class="border-top-0">APPROVED</th>
+                                    <th class="border-top-0">ACTION</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {% for user in inv_data["data"] %}
+                                    <tr class="load_info" data-id="{{ user['email'] }}" data-toggle="modal" data-target="#exampleModal">
+
+                                        <td><input type="checkbox"/></td>
+
+                                        {% if user["profile_pic_link"] %}
+                                            <td class="font-medium"><img src={{ user['profile_pic_link'] }} alt={{ user["first_name"] }} width="40"
+                                                                         height="40">
+                                            </td>
+                                        {% else %}
+                                            <td class="font-medium"><img
+                                                    src="../static/images/Google Fonts Downloads/{{ user['first_name'][0].upper() }}.png"
+                                                    alt={{ user['first_name'] }} width="40" height="40">
+                                            </td>
+                                        {% endif %}
+                                        <td class="font-medium">{{ user["first_name"] }}</td>
+                                        <td class="font-medium">{{ user["last_name"] }}</td>
+                                        <td class="font-medium">{{ user["created"] }}</td>
+                                        <td class="font-medium">{{ user["location"] }}</td>
+                                        {% if user["email_confirmed"] == False %}
+                                            <td><span class="label label-danger label-rounded">{{ user["email_confirmed"] }}</span></td>
+                                        {% else %}
+                                            <td><span class="label label-success label-rounded">{{ user["email_confirmed"] }}</span></td>
+                                        {% endif %}
+                                        {% if user["angel"] == False %}
+                                            <td><span class="label label-danger label-rounded">{{ user["angel"] }}</span></td>
+                                        {% elif user["angel"] == True %}
+                                            <td><span class="label label-success label-rounded">{{ user["angel"] }}</span></td>
+                                        {% else %}
+                                            <td><span class="label label-info label-rounded">{{ user["angel"] }}</span></td>
+                                        {% endif %}
+                                        {% if user["approved"] == False %}
+                                            <td><span class="label label-danger label-rounded">{{ user["approved"] }}</span></td>
+                                        {% else %}
+                                            <td><span class="label label-success label-rounded">{{ user["approved"] }}</span></td>
+                                        {% endif %}
+                                        <td>
+                                            {% if user["approved"] == False %}
+                                                <form method="POST">
+                                                    <input type="hidden" name="approve" value="{{ user[" email"] }}">
+                                                    <input class="btn btn-primary" type="submit"
+                                                           onclick="return confirm('Are you sure you want to approve this user?')" value="Approve">
+                                                </form>
+                                            {% else %}
+                                                <form method="POST">
+                                                    <input type="hidden" name="disapprove" value="{{ user[" email"] }}">
+                                                    <input class="btn btn-danger" type="submit"
+                                                           onclick="return confirm('Are you sure you want to approve this user?')" value="Disapprove">
+                                                </form>
+                                            {% endif %}
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                                </tbody>
+                            </table>
+                            <br>
+
+                            <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+                                 aria-hidden="true">
+                                <div class="modal-dialog" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+                                            <h4 class="modal-title font-weight-bold" text-align="center" id="myModalLabel">INVESTOR</h4>
+                                        </div>
+                                        <div class="modal-body">
+                                            <center>
+                                                <img src="" name="aboutme" id="inv_img" width="140" height="140" border="0" class="img-circle"></a>
+                                                <h3 id="inv_name" class="media-heading"></h3>
+                                                <h5 id="inv_loc"></h5>
+                                                <span id="inv_ec" class="label"></span>
+                                                <span id="inv_appr" class="label"></span>
+                                                <span id="inv_angel" class="label"></span>
+                                            </center>
+                                            <hr>
+                                            <center>
+                                                <div class="card border-dark mb-3">
+                                                    <div class="card-header font-weight-bold">PROFILE</div>
+                                                    <div class="card-body text-dark">
+                                                        <h5 class="card-title font-weight-bold">Email: <small id="inv_email"></small></h5>
+                                                        <h5 class="card-title font-weight-bold">Deals: <small id="inv_deals"></small></h5>
+                                                        <h5 class="card-title font-weight-bold">Accreditation: <small id="inv_accreditation"></small>
+                                                        </h5>
+                                                        <h5 class="card-title font-weight-bold">Syndicate: <small id="inv_syndicate"></small></h5>
+                                                        <h5 class="card-title font-weight-bold">Sectors: <span><br></span><small
+                                                                id="inv_sectors"></small>
+                                                        </h5>
+                                                    </div>
+                                                    <div id="inv_created" class="card-footer"></div>
                                                 </div>
-                                                <div id="inv_created" class="card-footer"></div>
-                                            </div>
-                                            <div class="card border-dark mb-3">
-                                                <div class="card-header font-weight-bold">Bio</div>
-                                                <div class="card-body text-dark">
-                                                    <p id="inv_bio" class="card-text"></p>
+                                                <div class="card border-dark mb-3">
+                                                    <div class="card-header font-weight-bold">Bio</div>
+                                                    <div class="card-body text-dark">
+                                                        <p id="inv_bio" class="card-text"></p>
+                                                    </div>
                                                 </div>
-                                            </div>
-                                            <div class="card border-dark mb-3">
-                                                <div class="card-header font-weight-bold">Connections</div>
-                                                <div class="card-body text-dark">
-                                                    <p id="inv_connected" class="card-text"></p>
+                                                <div class="card border-dark mb-3">
+                                                    <div class="card-header font-weight-bold">Connections</div>
+                                                    <div class="card-body text-dark">
+                                                        <p id="inv_connected" class="card-text"></p>
+                                                    </div>
                                                 </div>
-                                            </div>
-                                            <br>
-                                        </center>
-                                    </div>
-                                    <div class="modal-footer">
-                                        <center>
-                                            <button type="button" class="btn btn-default font-weight-bold" data-dismiss="modal">AngelFund AI</button>
-                                        </center>
+                                                <br>
+                                            </center>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <center>
+                                                <button type="button" class="btn btn-default font-weight-bold" data-dismiss="modal">AngelFund AI
+                                                </button>
+                                            </center>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
+                            <script>
+                                $('#myModal').on('shown.bs.modal', function () {
+                                    $('#myInput').trigger('focus')
+                                })
+
+
+                                $('.load_info').click(function () {
+                                        var element = $(this);
+                                        var email = element.attr('data-id');
+                                        $.ajax({
+                                            url: '/admin/get-single-investor',
+                                            data: {'email': email},
+                                            method: 'POST',
+                                            success: function (data) {
+                                                console.log(data);
+
+
+                                                if (data["data"]["profile_pic_link"]) {
+                                                    $('#inv_img').attr('src', data["data"]["profile_pic_link"])
+                                                } else {
+                                                    $('#inv_img').attr('src', "../static/images/Google Fonts Downloads/" + data["data"]["first_name"][0].toUpperCase() + ".png")
+                                                }
+
+
+                                                if (data["data"]["email_confirmed"]) {
+                                                    $('#inv_ec').html("Email Confirmed").addClass("label-success")
+                                                } else {
+                                                    $('#inv_ec').html("Email not confirmed").addClass("label-danger")
+                                                }
+
+                                                if (data["data"]["approved"]) {
+                                                    $('#inv_appr').html("Approved").addClass("label-success")
+                                                } else {
+                                                    $('#inv_appr').html("Not Approved").addClass("label-danger")
+                                                }
+
+                                                if (data["data"]["angel"] == true) {
+                                                    $('#inv_angel').html("Angel").addClass("label-info")
+                                                } else {
+                                                    $('#inv_angel').html("Not Angel").addClass("label-danger")
+                                                }
+
+
+                                                $('#inv_name').html(data["data"]["first_name"] + " " + data["data"]["last_name"])
+                                                $('#inv_loc').html(data["data"]["location"])
+                                                $('#inv_bio').html(data["data"]["bio"])
+
+                                                connected_array = data["data"]["connected"]
+                                                var jq_connected_array = [];
+
+                                                $.each(connected_array, function (key, value) {
+                                                    jq_connected_array.push(key + "<br>")
+                                                });
+                                                $('#inv_connected').html(jq_connected_array.join(""))
+
+                                                $('#inv_created').html(data["data"]["created"])
+                                                $('#inv_accreditation').html(data["data"]["accreditation"])
+                                                $('#inv_syndicate').html(data["data"]["syndicate"])
+                                                $('#inv_deals').html(data["data"]["deals"])
+
+                                                sectors_array = data["data"]["sectors"]
+                                                var jq_sectors_array = [];
+                                                for (var i = 0; i < sectors_array.length; i++) {
+                                                    jq_sectors_array.push(sectors_array[i]);
+                                                }
+                                                $('#inv_sectors').html(jq_sectors_array.join(", "))
+
+                                                $('#inv_email').html(data["data"]["email"])
+
+                                            }
+
+                                        });
+                                    }
+                                );
+
+                            </script>
                         </div>
-                        <script>
-                            $('#myModal').on('shown.bs.modal', function () {
-                                $('#myInput').trigger('focus')
-                            })
-
-
-                            $('.load_info').click(function () {
-                                    var element = $(this);
-                                    var email = element.attr('data-id');
-                                    $.ajax({
-                                        url: '/admin/get-single-investor',
-                                        data: {'email': email},
-                                        method: 'POST',
-                                        success: function (data) {
-                                            console.log(data);
-
-
-                                            if (data["data"]["profile_pic_link"]) {
-                                                $('#inv_img').attr('src', data["data"]["profile_pic_link"])
-                                            } else {
-                                                $('#inv_img').attr('src', "../static/images/Google Fonts Downloads/" + data["data"]["first_name"][0].toUpperCase() + ".png")
-                                            }
-
-
-                                            if (data["data"]["email_confirmed"]) {
-                                                $('#inv_ec').html("Email Confirmed").addClass("label-success")
-                                            } else {
-                                                $('#inv_ec').html("Email not confirmed").addClass("label-danger")
-                                            }
-
-                                            if (data["data"]["approved"]) {
-                                                $('#inv_appr').html("Approved").addClass("label-success")
-                                            } else {
-                                                $('#inv_appr').html("Not Approved").addClass("label-danger")
-                                            }
-
-                                            if (data["data"]["angel"] == true) {
-                                                $('#inv_angel').html("Angel").addClass("label-info")
-                                            } else {
-                                                $('#inv_angel').html("Not Angel").addClass("label-danger")
-                                            }
-
-
-                                            $('#inv_name').html(data["data"]["first_name"] + " " + data["data"]["last_name"])
-                                            $('#inv_loc').html(data["data"]["location"])
-                                            $('#inv_bio').html(data["data"]["bio"])
-
-                                            connected_array = data["data"]["connected"]
-                                            var jq_connected_array = [];
-
-                                            $.each(connected_array, function (key, value) {
-                                                jq_connected_array.push(key + "<br>")
-                                            });
-                                            $('#inv_connected').html(jq_connected_array.join(""))
-
-                                            $('#inv_created').html(data["data"]["created"])
-                                            $('#inv_accreditation').html(data["data"]["accreditation"])
-                                            $('#inv_syndicate').html(data["data"]["syndicate"])
-                                            $('#inv_deals').html(data["data"]["deals"])
-
-                                            sectors_array = data["data"]["sectors"]
-                                            var jq_sectors_array = [];
-                                            for (var i = 0; i < sectors_array.length; i++) {
-                                                jq_sectors_array.push(sectors_array[i]);
-                                            }
-                                            $('#inv_sectors').html(jq_sectors_array.join(", "))
-
-                                            $('#inv_email').html(data["data"]["email"])
-
-                                        }
-
-                                    });
-                                }
-                            );
-
-                        </script>
                     </div>
                 </div>
             </div>
-        </div>
         {% endif %}
     </div>
     {% for i in range(1, (inv_data["total_count_inv"]//10)+2) %}
-    <div class="pagination pagination-centered">
-        <form method="POST">
-            <button class="btn btn-primary" type="submit">{{i}}</button>
-            <input type="hidden" name="page" value="{{ i-1 }}">
-        </form>
-    </div>
+        <div class="pagination pagination-centered">
+            <form method="POST">
+                <button class="btn btn-primary" type="submit">{{ i }}</button>
+                <input type="hidden" name="page" value="{{ i-1 }}">
+            </form>
+        </div>
     {% endfor %}
     <footer class="footer text-center">
         All Rights Reserved by AngelFund AI.
     </footer>
 </div>
+<script>
+    var checkedAttr = [];
+
+    $('#category-list :checkbox').change(function () {
+        checkedAttr = [];
+        $('#category-list :checkbox').each(function (i, item) {
+            if ($(item).is(':checked')) {
+                checkedAttr.push($(item).val());
+            }
+        });
+        console.log("checkedAttr:", checkedAttr);
+    });
+</script>
+
+
 <script src="../static/jquery/dist/jquery.min.js"></script>
 <script src="../static/popper.js/dist/umd/popper.min.js"></script>
 <script src="../static/bootstrap/dist/js/bootstrap.min.js"></script>

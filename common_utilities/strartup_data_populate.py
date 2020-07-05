@@ -44,8 +44,7 @@ def startup_data(csv_path, file_location):
         i["email_confirmed"] = False
         i["approved"] = False
 
-
-        email = i["email"]
+        email = i["email"].lower()
         users_count = collection.estimated_document_count()
         if users_count == 0:
             _id = 0
