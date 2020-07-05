@@ -2,7 +2,7 @@ image: python:3.7.3
 
 pipelines:
   branches:
-    test_server:
+    master:
     - step:
         name: Build
         caches:
@@ -42,7 +42,7 @@ pipelines:
               COMMAND: 'deploy'
               VERSION_LABEL: 'my-app-1.0.0'
               AWS_DEFAULT_REGION: 'us-west-1'
-              DEPLOYMENT_GROUP: 'Test-Branch'
+              DEPLOYMENT_GROUP: 'Master-Branch'
               FILE_EXISTS_BEHAVIOR: 'OVERWRITE'
               APPLICATION_NAME: 'AdminCodeDeploy'
               S3_BUCKET: 'sample-codebucket-guide'
