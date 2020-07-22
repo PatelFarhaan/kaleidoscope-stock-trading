@@ -20,7 +20,7 @@ def user_load(user_id):
 class AdminPortal(db.Document, UserMixin):
     password = db.StringField()
     email = db.EmailField(required=True, unique=True)
-    created = db.DateTimeField(default=datetime.datetime.utcnow())
+    created = db.DateTimeField(default=datetime.datetime.now)
 
     def get_id(self):
         return str(self.id)
@@ -43,10 +43,10 @@ class Investor(db.Document):
     password = db.StringField()
     accreditation = db.StringField()
     prior_investments = db.ListField()
+    show_limit = db.IntField(default=3)
     profile_pic_link = db.StringField()
     matched_week = db.IntField(default=0)
     count_passed = db.IntField(default=0)
-    show_limit = db.IntField(default=100)
     count_invited = db.IntField(default=0)
     all_transaction_fields = db.DictField()
     investor = db.BooleanField(default=True)
@@ -65,9 +65,9 @@ class Investor(db.Document):
     monday_notification = db.BooleanField(default=True)
     first_dashboard_visit = db.BooleanField(default=True)
     invite_accepted_notify = db.BooleanField(default=True)
-    created = db.DateTimeField(default=datetime.datetime.utcnow())
+    created = db.DateTimeField(default=datetime.datetime.now)
 
-    meta = dict(indexes=['email', '-created', 'is_google_signup'], strict=False)
+    meta = dict(indexes=['email', '-created', 'is_google_signup'], strict=True)
 
 
 #<==================================================================================================>
@@ -76,6 +76,7 @@ class Investor(db.Document):
 class Startup(db.Document):
     raised = db.IntField()
     bio = db.StringField()
+    deals = db.ListField()
     passed = db.DictField()
     pending = db.DictField()
     sectors = db.ListField()
@@ -116,6 +117,17 @@ class Startup(db.Document):
     monday_notification = db.BooleanField(default=True)
     first_dashboard_visit = db.BooleanField(default=True)
     invite_accepted_notify = db.BooleanField(default=True)
-    created = db.DateTimeField(default=datetime.datetime.utcnow())
+    created = db.DateTimeField(default=datetime.datetime.now)
 
-    meta = dict(indexes=['email', '-created', 'is_google_signup'], strict=False)
+    meta = dict(indexes=['email', '-created', 'is_google_signup'], strict=True)
+
+
+#<==================================================================================================>
+#                                 INVESTOR BETA DATA
+#<==================================================================================================>
+class InvestorBetaData(db.Document):
+    email = db.StringField()
+    password = db.StringField()
+    confirmation_link = db.StringField()
+
+    meta = dict(indexes=['email'], strict=True)

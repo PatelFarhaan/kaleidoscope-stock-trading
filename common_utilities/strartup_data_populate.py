@@ -70,7 +70,7 @@ def startup_data(csv_path, file_location):
 #                                   DATABASE CONNECTION DETAILS
 #<==================================================================================================>
 def db_connection_details():
-    remote_mongo_uri = CONSTANT.TEST_DB_CLUSTER.value
+    remote_mongo_uri = CONSTANT.CURRENT_DATABASE.value
     mongo_client = MongoClient(remote_mongo_uri)
     db = mongo_client.matching
     collection = db.users

@@ -1,13 +1,13 @@
 import threading
 from werkzeug.security import check_password_hash
-from project.models import Investor, Startup, AdminPortal
-from common_utilities.file_processing import inv_file_process
+from common_utilities.file_processing import file_process
 from flask_login import login_required, login_user, logout_user
+from project.models import Investor, Startup, AdminPortal, InvestorBetaData
 from common_utilities.wait_list_completed_startup import wait_list_over_str
 from common_utilities.wait_list_completed_investor import wait_list_over_inv
 from flask import Blueprint, render_template, request, redirect, url_for, jsonify, session, flash
 from project.admin.admin_serializer import InvestorSerialize, StartupSerialize, StartupSerializeSingle,\
-                                           InvestorSerializeSingle
+                                           InvestorSerializeSingle, InvestorBetaSchema
 
 
 admin_blueprint = Blueprint('admin', '__name__', template_folder='templates', static_folder='static', url_prefix='/admin')
@@ -85,7 +85,7 @@ def investor_account():
             if not file_obj:
                 return redirect(url_for('admin.investor_account'))
 
-            res = inv_file_process(file_obj, True)
+            res = file_process(file_obj, True)
             if res:
                 session["success"] = "All Investor's updated successfully"
                 return redirect(url_for('admin.investor_account'))
@@ -195,7 +195,7 @@ def startup_account():
             if not file_obj:
                 return redirect(url_for('admin.startup_account'))
 
-            res = inv_file_process(file_obj, False)
+            res = file_process(file_obj, False)
             if res:
                 session["success"] = "All Startup's updated successfully"
                 return redirect(url_for('admin.startup_account'))
@@ -312,8 +312,22 @@ def deals_per_week():
 @admin_blueprint.route('/inv-data-populate', methods=["GET", "POST"])
 @login_required
 def inv_data_populate():
+    def get_data():
+        data = {}
+        inv_beta_data = InvestorBetaData.objects.all()
+        ma_schema = InvestorBetaSchema()
+        res = ma_schema.dump(inv_beta_data, many=True)
+        print(res)
+        if res:
+            data["result"] = True
+            data["data"] = res
+        else:
+            data["result"] = False
+            data["data"] = []
+        return data
+
     if request.method == "GET":
-        return render_template("inv_beta_data.html")
+        return render_template("inv_beta_data.html", inv_beta=get_data())
 
     elif request.method == "POST":
         if request.files:
@@ -321,43 +335,13 @@ def inv_data_populate():
 
             if not file_obj:
                 flash("No file found. Please input a file")
-                return render_template("inv_beta_data.html")
+                return render_template("inv_beta_data.html", inv_beta=get_data())
 
             else:
-                res = inv_file_process(file_obj, True)
+                res = file_process(file_obj, True, True)
                 if res:
-                    flash("All Investor's updated successfully", category="message")
-                    return redirect(url_for('admin.investor_account'))
+                    flash("All Investor's updated successfully")
+                    return redirect(url_for('admin.inv_data_populate'))
                 else:
                     flash("Some problem occurred while processing the file")
-                    return redirect(url_for('admin.investor_account'))
-
-
-#<==================================================================================================>
-#                                       STARTUP DATA POPULATE
-#<==================================================================================================>
-@admin_blueprint.route('/srt-data-populate', methods=["GET", "POST"])
-@login_required
-def str_data_populate():
-    if request.method == "GET":
-        return render_template("str_beta_data.html")
-
-    elif request.method == "POST":
-        if request.files:
-            file_obj = request.files.get('str_csv')
-
-            if not file_obj:
-                flash("No file found. Please input a file")
-                return render_template("str_beta_data.html")
-
-            else:
-                flash("File found.")
-                return render_template("str_beta_data.html")
-
-            # res = inv_file_process(file_obj, True)
-            # if res:
-            #     flash("All Investor's updated successfully", category="message")
-            #     return redirect(url_for('admin.investor_account'))
-            # else:
-            #     flash("Some problem occurred while processing the file")
-            #     return redirect(url_for('admin.investor_account'))
+                    return redirect(url_for('admin.inv_data_populate'))

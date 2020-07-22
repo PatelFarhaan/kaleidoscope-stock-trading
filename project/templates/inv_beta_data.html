@@ -72,9 +72,6 @@
             <li class="nav-item active">
                 <a class="nav-link" href="{{ url_for('admin.inv_data_populate') }}">Investor Data Populate</a>
             </li>
-            <li class="nav-item">
-                <a class="nav-link" href="{{ url_for('admin.str_data_populate') }}">Startup Data Populate</a>
-            </li>
         </ul>
     </div>
 </nav>
@@ -90,7 +87,7 @@
 <br>
 
 {% for message in get_flashed_messages() %}
-  <p style="color: purple;">{{ message }}</p>
+    <p style="color: purple;">{{ message }}</p>
 {% endfor %}
 
 
@@ -122,25 +119,47 @@
             });
         </script>
 
+
+        {% if inv_beta["result"] %}
+            <table class="table">
+                <thead class="thead-dark">
+                <tr>
+                    <th scope="col">Confirmation Link</th>
+                    <th scope="col">Password</th>
+                    <th scope="col">Email</th>
+
+                </tr>
+                </thead>
+
+                <tbody>
+                {% for inv in inv_beta["data"] %}
+                    <tr>
+                        {% for k,v in inv.items() %}
+                            <td>{{ v }}</td>
+                        {% endfor %}
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        {% endif %}
+
+
+
+        <footer class="footer text-center">
+            All Rights Reserved by AngelFund AI.
+        </footer>
     </div>
 
 
-
-    <footer class="footer text-center">
-        All Rights Reserved by AngelFund AI.
-    </footer>
-</div>
-
-
-<script src="../static/jquery/dist/jquery.min.js"></script>
-<script src="../static/popper.js/dist/umd/popper.min.js"></script>
-<script src="../static/bootstrap/dist/js/bootstrap.min.js"></script>
-<script src="../static/extra-libs/sparkline/sparkline.js"></script>
-<script src="../static/js/waves.js"></script>
-<script src="../static/js/sidebarmenu.js"></script>
-<script src="../static/js/custom.min.js"></script>
-<script src="../static/chartist/dist/chartist.min.js"></script>
-<script src="../static/chartist-plugin-tooltips/dist/chartist-plugin-tooltip.min.js"></script>
-<script src="../static/js/pages/dashboards/dashboard1.js"></script>
+    <script src="../static/jquery/dist/jquery.min.js"></script>
+    <script src="../static/popper.js/dist/umd/popper.min.js"></script>
+    <script src="../static/bootstrap/dist/js/bootstrap.min.js"></script>
+    <script src="../static/extra-libs/sparkline/sparkline.js"></script>
+    <script src="../static/js/waves.js"></script>
+    <script src="../static/js/sidebarmenu.js"></script>
+    <script src="../static/js/custom.min.js"></script>
+    <script src="../static/chartist/dist/chartist.min.js"></script>
+    <script src="../static/chartist-plugin-tooltips/dist/chartist-plugin-tooltip.min.js"></script>
+    <script src="../static/js/pages/dashboards/dashboard1.js"></script>
 </body>
 </html>
