@@ -1,3 +1,6 @@
+#<==================================================================================================>
+#                                       IMPORTS
+#<==================================================================================================>
 import threading
 from werkzeug.security import check_password_hash
 from common_utilities.file_processing import file_process
@@ -5,16 +8,21 @@ from flask_login import login_required, login_user, logout_user
 from project.models import Investor, Startup, AdminPortal, InvestorBetaData
 from common_utilities.wait_list_completed_startup import wait_list_over_str
 from common_utilities.wait_list_completed_investor import wait_list_over_inv
+from common_utilities.matching_db_updates import update_into_matching, clean_discover
 from flask import Blueprint, render_template, request, redirect, url_for, jsonify, session, flash
 from project.admin.admin_serializer import InvestorSerialize, StartupSerialize, StartupSerializeSingle,\
                                            InvestorSerializeSingle, InvestorBetaSchema
 
 
+
+#<==================================================================================================>
+#                                       ADMIN BLUEPRINT
+#<==================================================================================================>
 admin_blueprint = Blueprint('admin', '__name__', template_folder='templates', static_folder='static', url_prefix='/admin')
 
 
 #<==================================================================================================>
-#                                    ADMIN PANEL LOGIN
+#                                      ADMIN PANE LOGIN
 #<==================================================================================================>
 @admin_blueprint.route('/login', methods=["GET", "POST"])
 def login():
@@ -290,6 +298,9 @@ def deals_per_week():
                 for inv in inv_data_chunk:
                     setattr(inv, "show_limit", new_limit)
                     inv.save()
+                    update_into_matching(inv.email, new_limit, True)
+
+            clean_discover()
             flash(f"All investor's show limit updated to {new_limit}")
             return render_template("deals_per_week.html")
 
@@ -302,6 +313,9 @@ def deals_per_week():
                 for str in str_data_chunk:
                     setattr(str, "show_limit", new_limit)
                     str.save()
+                    update_into_matching(str.email, new_limit, False)
+
+            clean_discover()
             flash(f"All Startup's show limit updated to {new_limit}")
             return render_template("deals_per_week.html")
 
