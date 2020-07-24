@@ -47,3 +47,11 @@ class StartupSerializeSingle(ma.Schema):
                   "round_size", "company_link", "company_name", "num_team_members", "startup_pitch",
                   "profile_pic_link", "raised_capital_desc", "approved", "email_confirmed", "last_name",
                   "first_name", "email", "created", "connected")
+
+
+# <==================================================================================================>
+#                                      INVESTOR STR SCHEMA
+# <==================================================================================================>
+class InvestorBetaSchema(ma.Schema):
+    class Meta:
+        fields = ("confirmation_link", "password", "email")

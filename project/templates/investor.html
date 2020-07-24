@@ -66,6 +66,13 @@
             <li class="nav-item">
                 <a class="nav-link" href="#">Analytics</a>
             </li>
+             <li class="nav-item">
+                <a class="nav-link" href="{{ url_for('admin.deals_per_week') }}">Deals per Week</a>
+            </li>
+            </li>
+             <li class="nav-item">
+                <a class="nav-link" href="{{ url_for('admin.inv_data_populate') }}">Investor Data Populate</a>
+            </li>
         </ul>
     </div>
 </nav>
@@ -95,29 +102,27 @@
     <div class="page-breadcrumb">
     </div>
     <div class="container-fluid">
-        {% if inv_data["result"] %}
-
-
-            <form method="POST" enctype="multipart/form-data">
-                <div class="form-group">
-                    <label class="control-label">Investor Data</label>
-                    <div class="custom-file">
-                        <input type="file" class="custom-file-input" name="inv_csv" aria-describedby="inputGroupFileAddon01">
-                        <label class="custom-file-label" for="inputGroupFile01">Choose file</label>
+         <form method="POST" enctype="multipart/form-data">
+                    <div class="form-group">
+                        <label class="control-label">Investor Data</label>
+                        <div class="custom-file">
+                            <input type="file" class="custom-file-input" name="inv_csv" aria-describedby="inputGroupFileAddon01">
+                            <label class="custom-file-label" for="inputGroupFile01">Choose file</label>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Submit</button>
                     </div>
-                    <button type="submit" class="btn btn-primary">Submit</button>
-                </div>
-            </form>
+                </form>
 
-            <br>
-            <script>
-                // Add the following code if you want the name of the file appear on select
-                $(".custom-file-input").on("change", function () {
-                    var fileName = $(this).val().split("\\").pop();
-                    $(this).siblings(".custom-file-label").addClass("selected").html(fileName);
-                });
-            </script>
+                <br>
+                <script>
+                    // Add the following code if you want the name of the file appear on select
+                    $(".custom-file-input").on("change", function () {
+                        var fileName = $(this).val().split("\\").pop();
+                        $(this).siblings(".custom-file-label").addClass("selected").html(fileName);
+                    });
+                </script>
 
+        {% if inv_data["result"] %}
             <div class="row">
                 <div class="col-12">
                     <div class="card">

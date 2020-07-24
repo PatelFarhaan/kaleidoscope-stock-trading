@@ -1,12 +1,13 @@
 #<==================================================================================================>
 #                                      IMPORTS
 #<==================================================================================================>
-import sys
 import os
+import sys
 import uuid
 import shutil
 import pandas as pd
 sys.path.append("../")
+from common_utilities.beta_inv_data import investor_beta_data
 from common_utilities.strartup_data_populate import startup_data
 from common_utilities.investor_data_populate import investor_data
 
@@ -14,7 +15,7 @@ from common_utilities.investor_data_populate import investor_data
 #<==================================================================================================>
 #                                  FILE PROCESSING
 #<==================================================================================================>
-def inv_file_process(file_obj, is_inv):
+def file_process(file_obj, is_inv, is_beta=False):
     file_name = file_obj.filename.replace(' ', '').split('.', 1)[0]
 
     file_location = f"{os.getcwd()}/{str(uuid.uuid4())}"
@@ -32,7 +33,13 @@ def inv_file_process(file_obj, is_inv):
     except:
         return False
 
-    if is_inv:
-        return investor_data(file_path, file_location)
+    if is_beta:
+        if is_inv:
+            return investor_beta_data(file_path, file_location)
+        else:
+            pass
     else:
-        return startup_data(file_path, file_location)
+        if is_inv:
+            return investor_data(file_path, file_location)
+        else:
+            return startup_data(file_path, file_location)

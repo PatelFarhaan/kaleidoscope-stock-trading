@@ -1,20 +1,28 @@
+#<==================================================================================================>
+#                                       IMPORTS
+#<==================================================================================================>
 import threading
 from werkzeug.security import check_password_hash
-from project.models import Investor, Startup, AdminPortal
-from common_utilities.file_processing import inv_file_process
+from common_utilities.file_processing import file_process
 from flask_login import login_required, login_user, logout_user
+from project.models import Investor, Startup, AdminPortal, InvestorBetaData
 from common_utilities.wait_list_completed_startup import wait_list_over_str
 from common_utilities.wait_list_completed_investor import wait_list_over_inv
-from flask import Blueprint, render_template, request, redirect, url_for, jsonify, session
+from common_utilities.matching_db_updates import update_into_matching, clean_discover
+from flask import Blueprint, render_template, request, redirect, url_for, jsonify, session, flash
 from project.admin.admin_serializer import InvestorSerialize, StartupSerialize, StartupSerializeSingle,\
-                                           InvestorSerializeSingle
+                                           InvestorSerializeSingle, InvestorBetaSchema
 
 
+
+#<==================================================================================================>
+#                                       ADMIN BLUEPRINT
+#<==================================================================================================>
 admin_blueprint = Blueprint('admin', '__name__', template_folder='templates', static_folder='static', url_prefix='/admin')
 
 
 #<==================================================================================================>
-#                                    ADMIN PANEL LOGIN
+#                                      ADMIN PANE LOGIN
 #<==================================================================================================>
 @admin_blueprint.route('/login', methods=["GET", "POST"])
 def login():
@@ -85,7 +93,7 @@ def investor_account():
             if not file_obj:
                 return redirect(url_for('admin.investor_account'))
 
-            res = inv_file_process(file_obj, True)
+            res = file_process(file_obj, True)
             if res:
                 session["success"] = "All Investor's updated successfully"
                 return redirect(url_for('admin.investor_account'))
@@ -195,7 +203,7 @@ def startup_account():
             if not file_obj:
                 return redirect(url_for('admin.startup_account'))
 
-            res = inv_file_process(file_obj, False)
+            res = file_process(file_obj, False)
             if res:
                 session["success"] = "All Startup's updated successfully"
                 return redirect(url_for('admin.startup_account'))
@@ -270,3 +278,84 @@ def get_startup_data():
     ret_obj = jsonify({"result": True, "data": ser_data})
     ret_obj.headers.add('Access-Control-Allow-Origin', '*')
     return ret_obj
+
+
+#<==================================================================================================>
+#                                       DEALS PER WEEK
+#<==================================================================================================>
+@admin_blueprint.route('/deals-per-week', methods=["GET", "POST"])
+@login_required
+def deals_per_week():
+    if request.method == "GET":
+        return render_template("deals_per_week.html")
+    elif request.method == "POST":
+        if request.form.get("inv_deals"):
+            limit = 50
+            new_limit = int(request.form.get("inv_deals"))
+            total_inv_count = Investor.objects.count()
+            for offset in range(0, total_inv_count, limit):
+                inv_data_chunk = Investor.objects.skip(offset).limit(limit)
+                for inv in inv_data_chunk:
+                    setattr(inv, "show_limit", new_limit)
+                    inv.save()
+                    update_into_matching(inv.email, new_limit, True)
+
+            clean_discover()
+            flash(f"All investor's show limit updated to {new_limit}")
+            return render_template("deals_per_week.html")
+
+        elif request.form.get("str_deals"):
+            limit = 50
+            new_limit = int(request.form.get("str_deals"))
+            total_str_count = Startup.objects.count()
+            for offset in range(0, total_str_count, limit):
+                str_data_chunk = Startup.objects.skip(offset).limit(limit)
+                for str in str_data_chunk:
+                    setattr(str, "show_limit", new_limit)
+                    str.save()
+                    update_into_matching(str.email, new_limit, False)
+
+            clean_discover()
+            flash(f"All Startup's show limit updated to {new_limit}")
+            return render_template("deals_per_week.html")
+
+
+#<==================================================================================================>
+#                                       INVESTORS DATA POPULATE
+#<==================================================================================================>
+@admin_blueprint.route('/inv-data-populate', methods=["GET", "POST"])
+@login_required
+def inv_data_populate():
+    def get_data():
+        data = {}
+        inv_beta_data = InvestorBetaData.objects.all()
+        ma_schema = InvestorBetaSchema()
+        res = ma_schema.dump(inv_beta_data, many=True)
+        print(res)
+        if res:
+            data["result"] = True
+            data["data"] = res
+        else:
+            data["result"] = False
+            data["data"] = []
+        return data
+
+    if request.method == "GET":
+        return render_template("inv_beta_data.html", inv_beta=get_data())
+
+    elif request.method == "POST":
+        if request.files:
+            file_obj = request.files.get('inv_csv')
+
+            if not file_obj:
+                flash("No file found. Please input a file")
+                return render_template("inv_beta_data.html", inv_beta=get_data())
+
+            else:
+                res = file_process(file_obj, True, True)
+                if res:
+                    flash("All Investor's updated successfully")
+                    return redirect(url_for('admin.inv_data_populate'))
+                else:
+                    flash("Some problem occurred while processing the file")
+                    return redirect(url_for('admin.inv_data_populate'))
