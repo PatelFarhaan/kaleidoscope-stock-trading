@@ -43,7 +43,7 @@ def investor_beta_data(csv_path, file_location):
         if users_count == 0:
             _id = 0
         else:
-            _id = (((users_count) * 100) + 100)
+            _id = list(collection.find().skip(users_count-1))[0].get("_id") + 100
 
         try:
             new_obj = Investor(**i)
@@ -55,7 +55,6 @@ def investor_beta_data(csv_path, file_location):
             collection.insert_one(resp)
         except:
             return False
-        break
 
     shutil.rmtree(file_location)
     return True
@@ -86,4 +85,4 @@ def get_random_password(length=10):
 def confirmation_link_generator(email):
     serial = URLSafeTimedSerializer("***REMOVED_SECRET_KEY***")
     token = serial.dumps(email, salt='email_confirm')
-    return f"***REMOVED_SERVER_URL***/api/v1/investor/email-confirmed/{token}"
+    return f"{CONSTANT.CURRENT_SERVER.value}/api/v1/investor/email-confirmed/{token}"

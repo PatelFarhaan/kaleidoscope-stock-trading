@@ -81,7 +81,6 @@
 </head>
 <body>
 
-
 <div class="sidenav">
     <div class="login-main-text">
         <h2>ANGELFUND AI<br> Admin Page</h2>
@@ -90,6 +89,11 @@
 </div>
 <div class="main">
     <div class="col-md-6 col-sm-12">
+
+        {% for message in get_flashed_messages() %}
+            <p style="color: black;">{{ message }}</p>
+        {% endfor %}
+
         <div class="login-form">
 
             <form method="POST">
@@ -105,11 +109,11 @@
             </form>
             <br>
             {% if res %}
-            {% if not res.get("result") %}
-            <div class="alert alert-danger" role="alert" align="center">
-                {{res["message"]}}
-            </div>
-            {% endif %}
+                {% if not res.get("result") %}
+                    <div class="alert alert-danger" role="alert" align="center">
+                        {{res["message"]}}
+                    </div>
+                {% endif %}
             {% endif %}
         </div>
     </div>

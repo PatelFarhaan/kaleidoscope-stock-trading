@@ -48,7 +48,6 @@ def login():
         return render_template("login.html")
 
 
-
 #<==================================================================================================>
 #                                    ADMIN PANEL LOGOUT
 #<==================================================================================================>
@@ -56,7 +55,8 @@ def login():
 @login_required
 def logout():
     logout_user()
-    return jsonify({"result": True, "message": "user logged out successfully"})
+    flash("user logged out successfully!!!")
+    return redirect(url_for("admin.login"))
 
 
 #<==================================================================================================>
@@ -212,7 +212,6 @@ def startup_account():
                 return redirect(url_for('admin.startup_account'))
 
         if request.form.get('approve'):
-            print(request.form)
             user_email = request.form.get('approve')
             if not user_email:
                 return redirect(url_for('admin.investor_account'))
@@ -331,7 +330,6 @@ def inv_data_populate():
         inv_beta_data = InvestorBetaData.objects.all()
         ma_schema = InvestorBetaSchema()
         res = ma_schema.dump(inv_beta_data, many=True)
-        print(res)
         if res:
             data["result"] = True
             data["data"] = res
@@ -359,3 +357,9 @@ def inv_data_populate():
                 else:
                     flash("Some problem occurred while processing the file")
                     return redirect(url_for('admin.inv_data_populate'))
+        else:
+            action = request.form.get("action")
+            if action == "delete_records":
+                InvestorBetaData.objects.delete()
+                flash("All beta links deleted")
+                return render_template("inv_beta_data.html", inv_beta=get_data())
