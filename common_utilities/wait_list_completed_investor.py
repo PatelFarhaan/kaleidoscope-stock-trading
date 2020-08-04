@@ -1,3 +1,6 @@
+#<==================================================================================================>
+#                                      IMPORTS
+#<==================================================================================================>
 import sys
 import boto3
 import logging
@@ -6,13 +9,19 @@ from common_utilities import CONSTANT
 from botocore.exceptions import ClientError
 
 
+#<==================================================================================================>
+#                                        LOGGER
+#<==================================================================================================>
 logger = logging.getLogger(__name__)
 
 
+#<==================================================================================================>
+#                              INVESTOR WAIT LIST OVER EMAIL TEMPLATE
+#<==================================================================================================>
 def wait_list_over_inv(user_email, first_name):
     RECIPIENT = [user_email]
-    AWS_REGION = "us-east-1"
-    SENDER = "noreply@angelfund.ai"
+    SENDER = CONSTANT.EMAIL_SENDER.value
+    AWS_REGION = CONSTANT.EMAIL_REGION.value
     AWS_ACCESS_KEY = CONSTANT.ACCESS_KEY.value
     AWS_ACCESS_VALUE = CONSTANT.ACCESS_VALUE.value
     SUBJECT = f"Welcome to Angelfund.ai, {first_name}!"

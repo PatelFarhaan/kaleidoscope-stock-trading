@@ -61,6 +61,9 @@
              <li class="nav-item">
                 <a class="nav-link" href="{{ url_for('admin.inv_data_populate') }}">Investor Data Populate</a>
             </li>
+          <li class="nav-item">
+                <a class="nav-link" href="{{ url_for('admin.logout') }}">Logout</a>
+            </li>
       </ul>
    </div>
 </nav>
@@ -159,12 +162,12 @@
                         <td>
                            {% if user["approved"] == False %}
                            <form  method="POST">
-                              <input type="hidden" name="approve" value="{{ user["email"] }}">
+                              <input type="hidden" name="approve" value="{{ user['email'] }}">
                               <input class="btn btn-primary" type="submit" onclick="return confirm('Are you sure you want to approve this user?')" value="Approve">
                            </form>
                            {% else %}
                            <form  method="POST">
-                              <input type="hidden" name="disapprove" value="{{ user["email"] }}">
+                              <input type="hidden" name="disapprove" value="{{ user['email'] }}">
                               <input class="btn btn-danger" type="submit" onclick="return confirm('Are you sure you want to disapprove this user?')" value="Disapprove">
                            </form>
                            {% endif %}
