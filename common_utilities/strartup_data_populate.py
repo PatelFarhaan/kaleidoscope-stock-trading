@@ -31,7 +31,7 @@ def startup_data(csv_path, file_location):
         if i["co_founders"] == "":
             i["co_founders"] = []
         else:
-            i["co_founders"] = list(ast.literal_eval(i["co_founders"]))
+            i["co_founders"] = list(ast.literal_eval(i["co_founders"].strip()))
 
         if i["num_team_members"] == "":
             i["num_team_members"] = 0
