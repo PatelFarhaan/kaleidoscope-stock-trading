@@ -2,7 +2,7 @@ image: python:3.7.3
 
 pipelines:
   branches:
-    master:
+    test_server:
     - step:
         name: Build
         caches:
@@ -12,9 +12,9 @@ pipelines:
           - pip install --upgrade pip
           - pip3 install -r requirements.txt
           - apt-get install -y zip
-          - zip -r admin.zip .
+          - zip -r admin-test.zip .
         artifacts:
-          - admin.zip
+          - admin-test.zip
     - step:
         name: Uploading to S3
         caches:
@@ -23,7 +23,7 @@ pipelines:
           - pipe: atlassian/aws-code-deploy:0.5.3
             variables:
               COMMAND: 'upload'
-              ZIP_FILE: 'admin.zip'
+              ZIP_FILE: 'admin-test.zip'
               VERSION_LABEL: 'my-app-1.0.0'
               AWS_DEFAULT_REGION: 'us-west-1'
               APPLICATION_NAME: 'AdminCodeDeploy'
@@ -42,7 +42,7 @@ pipelines:
               COMMAND: 'deploy'
               VERSION_LABEL: 'my-app-1.0.0'
               AWS_DEFAULT_REGION: 'us-west-1'
-              DEPLOYMENT_GROUP: 'Master-Branch'
+              DEPLOYMENT_GROUP: 'Test-Branch'
               FILE_EXISTS_BEHAVIOR: 'OVERWRITE'
               APPLICATION_NAME: 'AdminCodeDeploy'
               S3_BUCKET: 'sample-codebucket-guide'
