@@ -24,6 +24,12 @@ def startup_data(csv_path, file_location):
     input = csv.DictReader(open(csv_path))
     for i in input:
         i = dict(i)
+
+        email = i["email"].lower()
+        user_exist_check = Startup.objects.filter(email=email).first()
+        if user_exist_check:
+            continue
+
         del i['']
         i["progress"] = [ progress[ele.strip()] for ele in i["progress"].split(',') ]
         i["sectors"] = [ sectors_det[j.strip()] for j in i["sectors"].split(',') if j != ""]
@@ -44,7 +50,6 @@ def startup_data(csv_path, file_location):
         i["email_confirmed"] = False
         i["approved"] = False
 
-        email = i["email"].lower()
         users_count = collection.estimated_document_count()
         if users_count == 0:
             _id = 0

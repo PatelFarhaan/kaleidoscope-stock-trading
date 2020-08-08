@@ -25,9 +25,14 @@ def investor_beta_data(csv_path, file_location):
     input = csv.DictReader(open(csv_path))
     for i in input:
         i = dict(i)
-        del i['']
-        i["approved"] =  False
+
         email = i["email"].lower()
+        user_exist_check = Investor.objects.filter(email=email).first()
+        if user_exist_check:
+            continue
+
+        del i['']
+        i["approved"] = False
         i["email_confirmed"] = False
         password = get_random_password()
         i["password"] = generate_password_hash(password)
