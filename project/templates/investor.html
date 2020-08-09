@@ -87,16 +87,12 @@
     </div>
 </div>
 <br>
-{% if session["success"] %}
-    <div class="alert alert-success" role="alert">
-        {{ session["success"] }}
-    </div>
-{% endif %}
-{% if session["errors"] %}
-    <div class="alert alert-danger" role="alert">
-        {{ session["errors"] }}
-    </div>
-{% endif %}
+
+{% for message in get_flashed_messages() %}
+    <p style="color: green;">{{ message }}</p>
+{% endfor %}
+
+
 <h3 align="center">
     DASHBOARD FOR INVESTOR'S
 </h3>
@@ -154,7 +150,7 @@
 
                                         <td>
                                             <div class="checkbox">
-                                                <input type="checkbox" name="check" value="{{ user['email'] }}">
+                                                <input type="checkbox" name="check" class="checkbox_approval" value="{{ user['email'] }}">
                                             </div>
                                         </td>
 
@@ -208,10 +204,9 @@
                                     </tr>
 
                                 {% endfor %}
-                                    <button type="submit" class="btn btn-secondary">Bulk Approve</button>
                                 </tbody>
-
                             </table>
+                            <button type="submit" id="bulk_approve" class="btn btn-secondary">Bulk Approve</button>
                             <br>
 
                             <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
@@ -276,6 +271,35 @@
                                     $('#myInput').trigger('focus')
                                 })
 
+                                $('.load_info input[type="checkbox"]').click(function(e) {
+                                    e.stopPropagation();
+                                });
+
+                                $('.load_info input[type="submit"]').click(function(e) {
+                                    e.stopPropagation();
+                                });
+
+                                $('#bulk_approve').click(function() {
+
+                                    var checked_row = $('.checkbox_approval:checked');
+                                    var selected_list = [];
+
+                                    $('.checkbox_approval:checked').each(function(){
+                                        selected_list.push($(this).parent().parent().parent().attr('data-id'));
+                                    });
+
+                                    console.log(selected_list);
+
+                                    $.ajax({
+                                        url: '/admin/investor-bulk-approve',
+                                        data: {'email_list': selected_list},
+                                        method: 'POST',
+                                        success: function (data) {
+                                            location.reload();
+                                        }
+                                    })
+
+                                });
 
                                 $('.load_info').click(function () {
                                         var element = $(this);
@@ -387,8 +411,5 @@
 <script src="../static/js/waves.js"></script>
 <script src="../static/js/sidebarmenu.js"></script>
 <script src="../static/js/custom.min.js"></script>
-<script src="../static/chartist/dist/chartist.min.js"></script>
-<script src="../static/chartist-plugin-tooltips/dist/chartist-plugin-tooltip.min.js"></script>
-<script src="../static/js/pages/dashboards/dashboard1.js"></script>
 </body>
 </html>
