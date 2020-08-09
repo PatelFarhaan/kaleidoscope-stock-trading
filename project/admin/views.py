@@ -68,7 +68,7 @@ def investor_account():
     if request.method == "GET":
         resp = Investor.objects.limit(10)
         ma_ser = InvestorSerialize()
-        if resp != []:
+        if resp:
             total_inv_counts = Investor.objects.count()
             res = ma_ser.dump(resp, many=True)
             return_data = {}
@@ -100,6 +100,10 @@ def investor_account():
             else:
                 session["errors"] = "Some problem occurred while processing the file"
                 return redirect(url_for('admin.investor_account'))
+
+        elif request.form.getlist("check"):
+            print("here")
+            return "jhabsdkjas"
 
         elif request.form.get('approve'):
             user_email = request.form.get('approve')

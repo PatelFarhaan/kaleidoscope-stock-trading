@@ -66,10 +66,10 @@
             <li class="nav-item">
                 <a class="nav-link" href="#">Analytics</a>
             </li>
-             <li class="nav-item">
+            <li class="nav-item">
                 <a class="nav-link" href="{{ url_for('admin.deals_per_week') }}">Deals per Week</a>
             </li>
-             <li class="nav-item">
+            <li class="nav-item">
                 <a class="nav-link" href="{{ url_for('admin.inv_data_populate') }}">Investor Data Populate</a>
             </li>
             <li class="nav-item">
@@ -104,25 +104,25 @@
     <div class="page-breadcrumb">
     </div>
     <div class="container-fluid">
-         <form method="POST" enctype="multipart/form-data">
-                    <div class="form-group">
-                        <label class="control-label">Investor Data</label>
-                        <div class="custom-file">
-                            <input type="file" class="custom-file-input" name="inv_csv" aria-describedby="inputGroupFileAddon01">
-                            <label class="custom-file-label" for="inputGroupFile01">Choose file</label>
-                        </div>
-                        <button type="submit" class="btn btn-primary">Submit</button>
-                    </div>
-                </form>
+        <form method="POST" enctype="multipart/form-data">
+            <div class="form-group">
+                <label class="control-label">Investor Data</label>
+                <div class="custom-file">
+                    <input type="file" class="custom-file-input" name="inv_csv" aria-describedby="inputGroupFileAddon01">
+                    <label class="custom-file-label" for="inputGroupFile01">Choose file</label>
+                </div>
+                <button type="submit" class="btn btn-primary">Submit</button>
+            </div>
+        </form>
 
-                <br>
-                <script>
-                    // Add the following code if you want the name of the file appear on select
-                    $(".custom-file-input").on("change", function () {
-                        var fileName = $(this).val().split("\\").pop();
-                        $(this).siblings(".custom-file-label").addClass("selected").html(fileName);
-                    });
-                </script>
+        <br>
+        <script>
+            // Add the following code if you want the name of the file appear on select
+            $(".custom-file-input").on("change", function () {
+                var fileName = $(this).val().split("\\").pop();
+                $(this).siblings(".custom-file-label").addClass("selected").html(fileName);
+            });
+        </script>
 
         {% if inv_data["result"] %}
             <div class="row">
@@ -148,10 +148,16 @@
                                 </tr>
                                 </thead>
                                 <tbody>
+
                                 {% for user in inv_data["data"] %}
                                     <tr class="load_info" data-id="{{ user['email'] }}" data-toggle="modal" data-target="#exampleModal">
 
-                                        <td><input type="checkbox"/></td>
+                                        <td>
+                                            <div class="checkbox">
+                                                <input type="checkbox" name="check" value="{{ user['email'] }}">
+                                            </div>
+                                        </td>
+
 
                                         {% if user["profile_pic_link"] %}
                                             <td class="font-medium"><img src={{ user['profile_pic_link'] }} alt={{ user["first_name"] }} width="40"
@@ -200,8 +206,11 @@
                                             {% endif %}
                                         </td>
                                     </tr>
+
                                 {% endfor %}
+                                    <button type="submit" class="btn btn-secondary">Bulk Approve</button>
                                 </tbody>
+
                             </table>
                             <br>
 

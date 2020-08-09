@@ -11,6 +11,7 @@ from pymongo import MongoClient
 from project.models import Investor
 from common_utilities import CONSTANT
 from project.serialise_class import InvestorMLSchema
+from werkzeug.security import generate_password_hash
 
 
 #<==================================================================================================>
@@ -32,19 +33,22 @@ def investor_data(csv_path, file_location):
             continue
 
         del i['']
+        i["approved"] = False
         i["deals"] = [i["deals"]]
+        i["email_confirmed"] = False
+        i["password"] = generate_password_hash("Angelfund1!")
+        i["sectors"] = [sectors_det[i.strip()] for i in i["sectors"].split(',')]
+        i["syndicate"] = [i.strip() for i in i["syndicate"].split(',') if i.strip() != ""]
+
         try:
             i["prior_investments"] = [json.loads(json.dumps(i)) for i in ast.literal_eval(i["prior_investments"])]
         except:
             i["prior_investments"] = []
-        i["sectors"] = [sectors_det[i.strip()] for i in i["sectors"].split(',')]
-        i["syndicate"] = [i.strip() for i in i["syndicate"].split(',') if i.strip() != ""]
+
         try:
             i["accreditation"] = str(int(float(i["accreditation"])))
         except:
             i["accreditation"] = "nothing"
-        i["email_confirmed"] = False
-        i["approved"] =  False
 
         users_count = collection.estimated_document_count()
         if users_count == 0:

@@ -10,6 +10,7 @@ from pymongo import MongoClient
 from project.models import Startup
 from common_utilities import CONSTANT
 from project.serialise_class import StartupMLSchema
+from werkzeug.security import generate_password_hash
 
 
 #<==================================================================================================>
@@ -31,6 +32,12 @@ def startup_data(csv_path, file_location):
             continue
 
         del i['']
+        i["approved"] = False
+        i["email_confirmed"] = False
+        i["raised"] = int(float(i["raised"]))
+        i["round_size"] = int(i["round_size"])
+        round_size = round_def(int(i["round_size"]))
+        i["password"] = generate_password_hash("Angelfund1!")
         i["progress"] = [ progress[ele.strip()] for ele in i["progress"].split(',') ]
         i["sectors"] = [ sectors_det[j.strip()] for j in i["sectors"].split(',') if j != ""]
 
@@ -43,12 +50,6 @@ def startup_data(csv_path, file_location):
             i["num_team_members"] = 0
         else:
             i["num_team_members"] = int(float(i["num_team_members"]))
-
-        round_size = round_def(int(i["round_size"]))
-        i["round_size"] = int(i["round_size"])
-        i["raised"] = int(float(i["raised"]))
-        i["email_confirmed"] = False
-        i["approved"] = False
 
         users_count = collection.estimated_document_count()
         if users_count == 0:
