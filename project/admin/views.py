@@ -359,7 +359,7 @@ def analytics():
 def retention():
     if request.method == "GET":
         inv_data = investor_retention(0)
-        str_data = investor_retention(0)
+        str_data = startup_retention(0)
         su_data = {"result": False, "data": None}
         return render_template("retention.html", inv_data=inv_data,
                                str_data=str_data, su_data=su_data)
@@ -374,6 +374,6 @@ def retention():
             return redirect(url_for("admin.retention"))
         else:
             inv_data = investor_retention(0)
-            str_data = investor_retention(0)
+            str_data = startup_retention(0)
             return render_template("retention.html", inv_data=inv_data,
                                    str_data=str_data, su_data=su_data)
