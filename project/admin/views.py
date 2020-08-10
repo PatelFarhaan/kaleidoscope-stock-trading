@@ -2,15 +2,21 @@
 #                                       IMPORTS
 #<==================================================================================================>
 from werkzeug.security import check_password_hash
+from common_utilities.analtics import complete_analytics
 from common_utilities.file_processing import file_process
 from common_utilities.account_approve import approve_account
 from flask_login import login_required, login_user, logout_user
 from common_utilities.account_disapprove import disapprove_account
 from project.models import Investor, Startup, AdminPortal, InvestorBetaData
 from common_utilities.matching_db_updates import update_into_matching, clean_discover
+from common_utilities.retention import investor_retention, startup_retention, user_retention
 from flask import Blueprint, render_template, request, redirect, url_for, jsonify, flash
 from project.admin.admin_serializer import (InvestorSerialize, StartupSerialize, InvestorBetaSchema,
                                             StartupSerializeSingle, InvestorSerializeSingle)
+
+
+
+
 
 
 #<==================================================================================================>
@@ -333,3 +339,41 @@ def startup_bulk_approve():
     ret_obj = jsonify({"result": True, "data": "all accounts approved if they exists"})
     ret_obj.headers.add('Access-Control-Allow-Origin', '*')
     return ret_obj
+
+
+#<==================================================================================================>
+#                                         ANALYTICS
+#<==================================================================================================>
+@admin_blueprint.route('/analytics', methods=["GET"])
+@login_required
+def analytics():
+    data = complete_analytics()
+    return render_template("analytics.html", data=data)
+
+
+#<==================================================================================================>
+#                                         RETENTION
+#<==================================================================================================>
+@admin_blueprint.route('/retention', methods=["GET", "POST"])
+@login_required
+def retention():
+    if request.method == "GET":
+        inv_data = investor_retention(0)
+        str_data = investor_retention(0)
+        su_data = {"result": False, "data": None}
+        return render_template("retention.html", inv_data=inv_data,
+                               str_data=str_data, su_data=su_data)
+
+    elif request.method == "POST":
+        email = request.form.get("single_user_retention")
+        is_inv = True if request.form.get("inlineRadioOptions") == "inv" else False
+
+        su_data = user_retention(email, is_inv)
+        if not su_data.get("result"):
+            flash(su_data.get("error"))
+            return redirect(url_for("admin.retention"))
+        else:
+            inv_data = investor_retention(0)
+            str_data = investor_retention(0)
+            return render_template("retention.html", inv_data=inv_data,
+                                   str_data=str_data, su_data=su_data)

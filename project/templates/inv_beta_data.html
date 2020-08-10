@@ -136,7 +136,13 @@
                 <a class="nav-link" href="{{ url_for('admin.startup_account') }}">Startups</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="#">Analytics</a>
+                <a class="nav-link" href="{{ url_for('admin.analytics') }}">Analytics</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{{ url_for('admin.retention') }}">Retention</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#">Churn</a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" href="{{ url_for('admin.deals_per_week') }}">Deals per Week</a>
@@ -237,8 +243,5 @@
     <script src="../static/js/waves.js"></script>
     <script src="../static/js/sidebarmenu.js"></script>
     <script src="../static/js/custom.min.js"></script>
-    <script src="../static/chartist/dist/chartist.min.js"></script>
-    <script src="../static/chartist-plugin-tooltips/dist/chartist-plugin-tooltip.min.js"></script>
-    <script src="../static/js/pages/dashboards/dashboard1.js"></script>
 </body>
 </html>
