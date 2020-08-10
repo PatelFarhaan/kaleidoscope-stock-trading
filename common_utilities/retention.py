@@ -23,7 +23,7 @@ def helper_function(collection: (InvestorUserAnalytics, StartupUserAnalytics),
         temp_obj["second_week"] = True if user.second_week else False
         temp_obj["fourth_week"] = True if user.fourth_week else False
         res.append(temp_obj)
-    return res
+    return {"result": True, "data": res}
 
 #<==================================================================================================>
 #                                    COMPLETE STARTUP RETENTION

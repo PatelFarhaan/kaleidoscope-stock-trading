@@ -209,8 +209,8 @@
                     </tr>
                     </thead>
                     <tbody>
-                    {% if data %}
-                        {% for user in inv_data %}
+                    {% if inv_data["result"] %}
+                        {% for user in inv_data["data"] %}
                             <tr>
                                 <td>{{ user["email"] }}</td>
 
@@ -270,8 +270,8 @@
                     </tr>
                     </thead>
                     <tbody>
-                    {% if data %}
-                        {% for user in str_data %}
+                    {% if str_data["result"] %}
+                        {% for user in str_data["data"] %}
                             <tr>
                                 <td>{{ user["email"] }}</td>
 
