@@ -15,10 +15,6 @@ from project.admin.admin_serializer import (InvestorSerialize, StartupSerialize,
                                             StartupSerializeSingle, InvestorSerializeSingle)
 
 
-
-
-
-
 #<==================================================================================================>
 #                                       ADMIN BLUEPRINT
 #<==================================================================================================>
@@ -111,10 +107,6 @@ def investor_account():
             else:
                 flash("Some problem occurred while processing the file")
                 return redirect(url_for("admin.investor_account"))
-
-        elif request.form.getlist("check"):
-            print("here")
-            return "jhabsdkjas"
 
         elif request.form.get('approve'):
             user_email = request.form.get('approve')
@@ -365,15 +357,32 @@ def retention():
                                str_data=str_data, su_data=su_data)
 
     elif request.method == "POST":
-        email = request.form.get("single_user_retention")
-        is_inv = True if request.form.get("inlineRadioOptions") == "inv" else False
+        if request.form.get("single_user_retention"):
+            email = request.form.get("single_user_retention")
+            is_inv = True if request.form.get("inlineRadioOptions") == "inv" else False
 
-        su_data = user_retention(email, is_inv)
-        if not su_data.get("result"):
-            flash(su_data.get("error"))
-            return redirect(url_for("admin.retention"))
-        else:
-            inv_data = investor_retention(0)
+            su_data = user_retention(email, is_inv)
+            if not su_data.get("result"):
+                flash(su_data.get("error"))
+                return redirect(url_for("admin.retention"))
+            else:
+                inv_data = investor_retention(0)
+                str_data = startup_retention(0)
+                return render_template("retention.html", inv_data=inv_data,
+                                       str_data=str_data, su_data=su_data)
+
+        elif request.form.get("inv_page"):
+            page_no = request.form.get('inv_page')
+            inv_data = investor_retention(page_no)
             str_data = startup_retention(0)
+            su_data = {"result": False, "data": None}
+            return render_template("retention.html", inv_data=inv_data,
+                                   str_data=str_data, su_data=su_data)
+
+        elif request.form.get("str_page"):
+            page_no = request.form.get('str_page')
+            inv_data = investor_retention(0)
+            str_data = startup_retention(page_no)
+            su_data = {"result": False, "data": None}
             return render_template("retention.html", inv_data=inv_data,
                                    str_data=str_data, su_data=su_data)

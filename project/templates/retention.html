@@ -147,6 +147,7 @@
                             <th scope="col">SECOND WEEK</th>
                             <th scope="col">THIRD WEEK</th>
                             <th scope="col">FOURTH WEEK</th>
+                            <th scope="col">LAST LOGIN</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -183,6 +184,8 @@
                                 <td></td>
                             {% endif %}
 
+                            <td>{{ su_data["data"]["last_login"] }}</td>
+
                         </tr>
                         </tbody>
                     </table>
@@ -206,6 +209,7 @@
                         <th scope="col">SECOND WEEK</th>
                         <th scope="col">THIRD WEEK</th>
                         <th scope="col">FOURTH WEEK</th>
+                        <th scope="col">LAST LOGIN</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -244,11 +248,22 @@
                                     <td></td>
                                 {% endif %}
 
+                                <td>{{ user["last_login"] }}</td>
+
                             </tr>
                         {% endfor %}
                     {% endif %}
                     </tbody>
                 </table>
+
+                {% for i in range(1, (inv_data["total_count"]//10)+2) %}
+                    <div class="pagination pagination-centered">
+                        <form method="POST">
+                            <button class="btn btn-primary" type="submit">{{ i }}</button>
+                            <input type="hidden" name="inv_page" value="{{ i-1 }}">
+                        </form>
+                    </div>
+                {% endfor %}
 
                 <br>
                 <br>
@@ -256,7 +271,7 @@
                 <h3 align="center">
                     <b>STARTUP RETENTION</b>
                 </h3>
-            <br>
+                <br>
 
                 <table class="table table-bordered">
                     <thead class="thead-dark">
@@ -267,6 +282,7 @@
                         <th scope="col">SECOND WEEK</th>
                         <th scope="col">THIRD WEEK</th>
                         <th scope="col">FOURTH WEEK</th>
+                        <th scope="col">LAST LOGIN</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -305,11 +321,23 @@
                                     <td></td>
                                 {% endif %}
 
+                                <td>{{ user["last_login"] }}</td>
+
                             </tr>
                         {% endfor %}
                     {% endif %}
                     </tbody>
                 </table>
+
+                {% for i in range(1, (inv_data["total_count"]//10)+2) %}
+                    <div class="pagination pagination-centered">
+                        <form method="POST">
+                            <button class="btn btn-primary" type="submit">{{ i }}</button>
+                            <input type="hidden" name="str_page" value="{{ i-1 }}">
+                        </form>
+                    </div>
+                {% endfor %}
+
                 <br>
             </div>
         </div>
