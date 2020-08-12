@@ -62,19 +62,20 @@ def user_retention(email, is_inv):
 def last_login_data(user_obj: object):
     if user_obj.today:
         last_login = user_obj.today[-1]
-        return last_login.strftime(format='%d %b %Y - %H:%M')
+        # return last_login.strftime(format='%d %b %Y - %H:%M')
+        return last_login.strftime(format='%d %b %Y')
     elif user_obj.first_week:
         last_login = user_obj.first_week[-1]
-        return last_login.strftime(format='%d %b %Y - %H:%M')
+        return last_login.strftime(format='%d %b %Y')
     elif user_obj.second_week:
         last_login = user_obj.second_week[-1]
-        return last_login.strftime(format='%d %b %Y - %H:%M')
+        return last_login.strftime(format='%d %b %Y')
     elif user_obj.third_week:
         last_login = user_obj.third_week[-1]
-        return last_login.strftime(format='%d %b %Y - %H:%M')
+        return last_login.strftime(format='%d %b %Y')
     elif user_obj.fourth_week:
         last_login = user_obj.fourth_week[-1]
-        return last_login.strftime(format='%d %b %Y - %H:%M')
+        return last_login.strftime(format='%d %b %Y')
     return "No Data"
 
 
