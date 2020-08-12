@@ -2,6 +2,7 @@
 #                                       IMPORTS
 #<==================================================================================================>
 from werkzeug.security import check_password_hash
+from common_utilities.delete_user import delete_a_user
 from common_utilities.analtics import complete_analytics
 from common_utilities.file_processing import file_process
 from common_utilities.account_approve import approve_account
@@ -120,6 +121,11 @@ def investor_account():
                 return redirect(url_for('admin.investor_account'))
             disapprove_account(user_email, True)
 
+        elif request.form.get('delete'):
+            user_email = request.form.get('delete')
+            delete_a_user(user_email, True)
+            return redirect(url_for('admin.investor_account'))
+
         elif request.form.get("page"):
             page_no = request.form.get('page')
             return_data = all_inv_data(page_no)
@@ -200,6 +206,11 @@ def startup_account():
             if not user_email:
                 return redirect(url_for('admin.startup_account'))
             disapprove_account(user_email, False)
+
+        elif request.form.get('delete'):
+            user_email = request.form.get('delete')
+            delete_a_user(user_email, False)
+            return redirect(url_for('admin.startup_account'))
 
         elif request.form.get("page"):
             page_no = request.form.get('page')
