@@ -3,6 +3,7 @@
 #<==================================================================================================>
 import sys
 sys.path.append("../")
+from datetime import datetime, timedelta
 from project.models import InvestorUserAnalytics, StartupUserAnalytics
 
 
@@ -19,12 +20,10 @@ def helper_function(collection: (InvestorUserAnalytics, StartupUserAnalytics),
         for user in resp:
             temp_obj = {}
             temp_obj["email"] = user.email
-            temp_obj["last_login"] = last_login_data(user)
-            temp_obj["today"] = True if user.today else False
-            temp_obj["first_week"] = True if user.first_week else False
-            temp_obj["third_week"] = True if user.third_week else False
-            temp_obj["second_week"] = True if user.second_week else False
-            temp_obj["fourth_week"] = True if user.fourth_week else False
+            temp_obj["last_login"] = user.last_login.strftime('%d %b %Y')
+            temp_obj["daily_ret"], temp_obj["daily_churn"] = churn_and_retention(user.daily, 1)
+            temp_obj["weekly_ret"], temp_obj["weekly_churn"] = churn_and_retention(user.daily, 7)
+            temp_obj["monthly_ret"], temp_obj["monthly_churn"] = churn_and_retention(user.daily, 30)
             res.append(temp_obj)
         return {"result": True, "data": res, "total_count": total_count}
     else:
@@ -44,39 +43,13 @@ def user_retention(email, is_inv):
     if not user:
         return {"result": False, "error": "user retention data not available"}
 
-    res = {}
-    res["email"] = user.email
-    res["last_login"] = last_login_data(user)
-    res["today"] = True if user.today else False
-    res["first_week"] = True if user.first_week else False
-    res["third_week"] = True if user.third_week else False
-    res["second_week"] = True if user.second_week else False
-    res["fourth_week"] = True if user.fourth_week else False
-    print(res)
-    return {"result": True, "data": res}
-
-
-#<==================================================================================================>
-#                                  USER LAST LOGIN DATA
-#<==================================================================================================>
-def last_login_data(user_obj: object):
-    if user_obj.today:
-        last_login = user_obj.today[-1]
-        # return last_login.strftime(format='%d %b %Y - %H:%M')
-        return last_login.strftime(format='%d %b %Y')
-    elif user_obj.first_week:
-        last_login = user_obj.first_week[-1]
-        return last_login.strftime(format='%d %b %Y')
-    elif user_obj.second_week:
-        last_login = user_obj.second_week[-1]
-        return last_login.strftime(format='%d %b %Y')
-    elif user_obj.third_week:
-        last_login = user_obj.third_week[-1]
-        return last_login.strftime(format='%d %b %Y')
-    elif user_obj.fourth_week:
-        last_login = user_obj.fourth_week[-1]
-        return last_login.strftime(format='%d %b %Y')
-    return "No Data"
+    temp_obj = {}
+    temp_obj["email"] = user.email
+    temp_obj["last_login"] = user.last_login.strftime('%d %b %Y')
+    temp_obj["daily_ret"], temp_obj["daily_churn"] = churn_and_retention(user.daily, 1)
+    temp_obj["weekly_ret"], temp_obj["weekly_churn"] = churn_and_retention(user.daily, 7)
+    temp_obj["monthly_ret"], temp_obj["monthly_churn"] = churn_and_retention(user.daily, 30)
+    return {"result": True, "data": temp_obj}
 
 
 #<==================================================================================================>
@@ -91,3 +64,26 @@ def startup_retention(page_no):
 #<==================================================================================================>
 def investor_retention(page_no):
     return helper_function(InvestorUserAnalytics, page_no)
+
+
+#<==================================================================================================>
+#                                      USER RETENTION
+#<==================================================================================================>
+def churn_and_retention(retention_list, days):
+    if len(retention_list) > 1:
+        is_consecutive = consecutive_check(retention_list[-1], retention_list[-2], days)
+        if is_consecutive:
+            return f"100%", f"100%"
+        else:
+            return "-", "-"
+    else:
+        return "-", "-"
+
+
+#<==================================================================================================>
+#                                     CONSECUTIVE CHECK
+#<==================================================================================================>
+def consecutive_check(current, previous, days):
+    current = current.get("date")
+    previous = previous.get("date")
+    return str(datetime.strptime(current, '%Y-%m-%d').date() - timedelta(days=days)) == previous
