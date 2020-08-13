@@ -4,6 +4,7 @@
 import sys
 import csv
 import ast
+import json
 import shutil
 sys.path.append("../")
 from pymongo import MongoClient
@@ -44,7 +45,7 @@ def startup_data(csv_path, file_location):
         if i["co_founders"] == "":
             i["co_founders"] = []
         else:
-            i["co_founders"] = list(ast.literal_eval(i["co_founders"].strip()))
+            i["co_founders"] = list(ast.literal_eval(json.dumps(i["co_founders"].strip())))
 
         if i["num_team_members"] == "":
             i["num_team_members"] = 0
@@ -55,7 +56,7 @@ def startup_data(csv_path, file_location):
         if users_count == 0:
             _id = 0
         else:
-            _id = (((users_count - 1) * 100) + 100)
+            _id = list(collection.find().skip(users_count-1))[0].get("_id") + 100
 
         i = {k:(v if v != "" else None) for k,v in i.items()}
 

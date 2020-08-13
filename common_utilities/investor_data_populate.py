@@ -54,7 +54,7 @@ def investor_data(csv_path, file_location):
         if users_count == 0:
             _id = 0
         else:
-            _id = (((users_count - 1) * 100) + 100)
+            _id = list(collection.find().skip(users_count-1))[0].get("_id") + 100
 
         new_obj = Investor(**i)
         new_obj.save()
