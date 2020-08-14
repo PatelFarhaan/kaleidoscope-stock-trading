@@ -273,8 +273,6 @@
                                    selected_list.push($(this).parent().parent().parent().attr('data-id'));
                                });
 
-                               console.log(selected_list);
-
                                $.ajax({
                                    url: '/admin/startup-bulk-approve',
                                    data: {'email_list': selected_list},
@@ -294,7 +292,6 @@
                                        data: {'email': email},
                                        method: 'POST',
                                        success: function(data) {
-                                           console.log(data);
 
                                            if (data["data"]["profile_pic_link"]) {
                                                $('#str_img').attr('src', data["data"]["profile_pic_link"])
@@ -338,7 +335,6 @@
                                            for (var i = 0; i < sectors_arr.length; i++) {
                                                jq_sectors_arr.push(sectors_arr[i])
                                            }
-                                           console.log(jq_sectors_arr)
                                            $('#str_sectors').html(jq_sectors_arr.join(", "))
 
 
@@ -348,7 +344,6 @@
                                                jq_sectors_arr.push(key)
                                            });
                                            $('#str_connected').html(jq_sectors_arr.join("<br>"))
-
 
                                            $('#str_email').html(data["data"]["email"])
                                            $('#str_progress').html(data["data"]["progress"])

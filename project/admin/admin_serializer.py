@@ -46,7 +46,7 @@ class StartupSerializeSingle(ma.Schema):
         fields = ("bio", "sectors", "raised", "progress", "position", "location", "slide_deck",
                   "round_size", "company_link", "company_name", "num_team_members", "startup_pitch",
                   "profile_pic_link", "raised_capital_desc", "approved", "email_confirmed", "last_name",
-                  "first_name", "email", "created", "connected")
+                  "first_name", "email", "created", "connected", "co_founders")
 
 
 # <==================================================================================================>
