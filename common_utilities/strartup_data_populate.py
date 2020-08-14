@@ -34,7 +34,7 @@ def startup_data(csv_path, file_location):
 
         del i['']
         i["approved"] = False
-        i["email_confirmed"] = False
+        i["email_confirmed"] = True
         i["raised"] = int(float(i["raised"]))
         i["round_size"] = int(i["round_size"])
         round_size = round_def(int(i["round_size"]))

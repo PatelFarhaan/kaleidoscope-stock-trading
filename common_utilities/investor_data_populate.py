@@ -35,7 +35,7 @@ def investor_data(csv_path, file_location):
         del i['']
         i["approved"] = False
         i["deals"] = [i["deals"]]
-        i["email_confirmed"] = False
+        i["email_confirmed"] = True
         i["password"] = generate_password_hash("Angelfund1!")
         i["sectors"] = [sectors_det[i.strip()] for i in i["sectors"].split(',')]
         i["syndicate"] = [i.strip() for i in i["syndicate"].split(',') if i.strip() != ""]
