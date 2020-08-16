@@ -97,7 +97,6 @@ class Startup(db.Document, UserMixin):
     count_passed = db.IntField(default=0)
     matched_week = db.IntField(default=0)
     count_invited = db.IntField(default=0)
-    raised_capital_desc = db.StringField()
     all_transaction_fields = db.DictField()
     investor = db.BooleanField(default=False)
     password_reset_meta_data = db.DictField()

@@ -41,7 +41,7 @@ def user_retention(email, is_inv):
     collection = InvestorUserAnalytics if is_inv else StartupUserAnalytics
     user = collection.objects.filter(email=email).first()
     if not user:
-        return {"result": False, "error": "user retention data not available"}
+        return {"result": False, "error": "user retention data not available for this user"}
 
     temp_obj = {}
     temp_obj["email"] = user.email
@@ -75,9 +75,9 @@ def churn_and_retention(retention_list, days):
         if is_consecutive:
             return f"100%", f"100%"
         else:
-            return "-", "-"
+            return "0%", "0%"
     else:
-        return "-", "-"
+        return "0%", "0%"
 
 
 #<==================================================================================================>

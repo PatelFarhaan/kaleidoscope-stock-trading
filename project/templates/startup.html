@@ -56,13 +56,10 @@
                   <a class="nav-link" href="{{ url_for('admin.analytics') }}">Analytics</a>
                </li>
                <li class="nav-item">
-                  <a class="nav-link" href="{{ url_for('admin.retention') }}">Retention and Churn</a>
-               </li>
-               <li class="nav-item">
                   <a class="nav-link" href="{{ url_for('admin.deals_per_week') }}">Deals per Week</a>
                </li>
                <li class="nav-item">
-                  <a class="nav-link" href="{{ url_for('admin.inv_data_populate') }}">Investor Data Populate</a>
+                  <a class="nav-link" href="{{ url_for('admin.inv_data_populate') }}">Investor Beta Links</a>
                </li>
                <li class="nav-item">
                   <a class="nav-link" href="{{ url_for('admin.logout') }}">Logout</a>
@@ -98,13 +95,118 @@
                </div>
             </form>
             <br>
-            <script>
-               // Add the following code if you want the name of the file appear on select
-               $(".custom-file-input").on("change", function () {
-                   var fileName = $(this).val().split("\\").pop();
-                   $(this).siblings(".custom-file-label").addClass("selected").html(fileName);
-               });
-            </script>
+
+
+         <form class="form-inline" name="test" method="POST">
+            <div class="form-group mx-sm-3 mb-2">
+                <label class="sr-only">First Name</label>
+                <input type="text" class="form-control" name="first_name" placeholder="First Name">
+            </div>
+            <div class="form-group mx-sm-3 mb-2">
+                <label class="sr-only">Last Name</label>
+                <input type="text" class="form-control" name="last_name" placeholder="Last Name">
+            </div>
+            <button type="submit" class="btn btn-primary mb-2">Search Startup</button>
+        </form>
+        <br>
+
+        {% if str_search_data["result"] %}
+            <div class="row">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-body">
+                            <h4 class="card-title text-primary">SEARCH RESULTS</h4>
+                        </div>
+                        <div class="table-responsive">
+                            <table class="table table-hover table-bordered" id="investor_table">
+                                <thead class="thead-dark">
+                                <tr>
+                                    <th class="border-top-0">CHECK</th>
+                                    <th class="border-top-0">PROFILE</th>
+                                    <th class="border-top-0">FN</th>
+                                    <th class="border-top-0">LN</th>
+                                    <th class="border-top-0">CREATED</th>
+                                    <th class="border-top-0">LOCATION</th>
+                                    <th class="border-top-0">EC</th>
+                                    <th class="border-top-0">ANGEL</th>
+                                    <th class="border-top-0">APPROVED</th>
+                                    <th class="border-top-0">ACTION</th>
+                                    <th class="border-top-0">DELETE</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {% for user in str_search_data["data"] %}
+                                    <tr class="load_info" data-id="{{ user['email'] }}" data-toggle="modal" data-target="#exampleModal">
+                                        <td>
+                                            <div class="checkbox">
+                                                <input type="checkbox" name="check" class="checkbox_approval" value="{{ user['email'] }}">
+                                            </div>
+                                        </td>
+                                        {% if user["profile_pic_link"] %}
+                                            <td class="font-medium"><img src={{ user['profile_pic_link'] }} alt={{ user["first_name"] }} width="40"
+                                                                         height="40">
+                                            </td>
+                                        {% else %}
+                                            <td class="font-medium"><img
+                                                    src="../static/images/Google Fonts Downloads/{{ user['first_name'][0].upper() }}.png"
+                                                    alt={{ user['first_name'] }} width="40" height="40">
+                                            </td>
+                                        {% endif %}
+                                        <td class="font-medium">{{ user["first_name"] }}</td>
+                                        <td class="font-medium">{{ user["last_name"] }}</td>
+                                        <td class="font-medium">{{ user["created"] }}</td>
+                                        <td class="font-medium">{{ user["location"] }}</td>
+                                        {% if user["email_confirmed"] == False %}
+                                            <td><span class="label label-danger label-rounded">{{ user["email_confirmed"] }}</span></td>
+                                        {% else %}
+                                            <td><span class="label label-success label-rounded">{{ user["email_confirmed"] }}</span></td>
+                                        {% endif %}
+                                        {% if user["angel"] == False %}
+                                            <td><span class="label label-danger label-rounded">{{ user["angel"] }}</span></td>
+                                        {% elif user["angel"] == True %}
+                                            <td><span class="label label-success label-rounded">{{ user["angel"] }}</span></td>
+                                        {% else %}
+                                            <td><span class="label label-info label-rounded">{{ user["angel"] }}</span></td>
+                                        {% endif %}
+                                        {% if user["approved"] == False %}
+                                            <td><span class="label label-danger label-rounded">{{ user["approved"] }}</span></td>
+                                        {% else %}
+                                            <td><span class="label label-success label-rounded">{{ user["approved"] }}</span></td>
+                                        {% endif %}
+                                        <td>
+                                            {% if user["approved"] == False %}
+                                                <form method="POST">
+                                                    <input type="hidden" name="approve" value="{{ user['email'] }}">
+                                                    <input class="btn btn-primary" type="submit"
+                                                           onclick="return confirm('Are you sure you want to approve this user?')" value="Approve">
+                                                </form>
+                                            {% else %}
+                                                <form method="POST">
+                                                    <input type="hidden" name="disapprove" value="{{ user['email'] }}">
+                                                    <input class="btn btn-danger" type="submit"
+                                                           onclick="return confirm('Are you sure you want to approve this user?')" value="Disapprove">
+                                                </form>
+                                            {% endif %}
+                                        </td>
+                                        <td>
+                                            <form method="POST">
+                                                <input type="hidden" name="delete" value="{{ user['email'] }}">
+                                                <input class="btn btn-dark" type="submit"
+                                                       onclick="return confirm('Are you sure you want to delete this user?')" value="Delete">
+                                            </form>
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                                </tbody>
+                            </table>
+                            <br>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endif %}
+
+
             {% if inv_data["result"]  %}
             <div class="row">
                <div class="col-12">
@@ -231,7 +333,7 @@
                                           </div>
                                        </div>
                                        <div class="card border-dark mb-3">
-                                          <div class="card-header font-weight-bold">CAPITAL RAISED DESC</div>
+                                          <div class="card-header font-weight-bold">RAISED</div>
                                           <div class="card-body text-dark">
                                              <p  id="str_capital_reaised_desc" class="card-text"></p>
                                           </div>
@@ -346,8 +448,17 @@
                                            $('#str_connected').html(jq_sectors_arr.join("<br>"))
 
                                            $('#str_email').html(data["data"]["email"])
-                                           $('#str_progress').html(data["data"]["progress"])
-                                           $('str_capital_reaised_desc').html(data["data"]["raised_capital_desc"])
+
+
+                                           progress_arr = data["data"]["progress"]
+                                           var jq_progress_array = [];
+                                           for (var i = 0; i < progress_arr.length; i++) {
+                                               jq_progress_array.push(progress_arr[i]);
+                                           }
+                                           $('#str_progress').html(jq_progress_array.join(", "))
+
+
+                                           $('#str_capital_reaised_desc').html(data["data"]["raised"])
 
                                        }
 
@@ -375,6 +486,13 @@
             All Rights Reserved by AngelFund AI.
          </footer>
       </div>
+      <script>
+               $(".custom-file-input").on("change", function () {
+                   var fileName = $(this).val().split("\\").pop();
+                   $(this).siblings(".custom-file-label").addClass("selected").html(fileName);
+               });
+            </script>
+
       <script src="../static/jquery/dist/jquery.min.js"></script>
       <script src="../static/popper.js/dist/umd/popper.min.js"></script>
       <script src="../static/bootstrap/dist/js/bootstrap.min.js"></script>

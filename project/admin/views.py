@@ -1,12 +1,14 @@
 #<==================================================================================================>
 #                                       IMPORTS
 #<==================================================================================================>
+from common_utilities.graphs import run_all
 from werkzeug.security import check_password_hash
 from common_utilities.delete_user import delete_a_user
 from common_utilities.analtics import complete_analytics
 from common_utilities.file_processing import file_process
 from common_utilities.account_approve import approve_account
 from flask_login import login_required, login_user, logout_user
+from common_utilities.records_search_by_name import get_user_data
 from common_utilities.account_disapprove import disapprove_account
 from project.models import Investor, Startup, AdminPortal, InvestorBetaData
 from common_utilities.matching_db_updates import update_into_matching, clean_discover
@@ -92,7 +94,8 @@ def investor_account():
 
     if request.method == "GET":
         return_data = all_inv_data()
-        return render_template('investor.html', inv_data=return_data)
+        return render_template('investor.html', inv_data=return_data,
+                               inv_search_data={"result": False})
 
     elif request.method == "POST":
         if request.files:
@@ -107,6 +110,17 @@ def investor_account():
                 return redirect(url_for("admin.investor_account"))
             else:
                 flash("Some problem occurred while processing the file")
+                return redirect(url_for("admin.investor_account"))
+
+        elif request.form.get("first_name") or request.form.get("last_name"):
+            search_data = get_user_data(request.form.get("first_name"),
+                                        request.form.get("last_name"), True)
+            return_data = all_inv_data()
+            if search_data["result"]:
+                return render_template("investor.html",inv_data=return_data,
+                                       inv_search_data=search_data)
+            else:
+                flash("No such user found")
                 return redirect(url_for("admin.investor_account"))
 
         elif request.form.get('approve'):
@@ -143,6 +157,9 @@ def get_investor_data():
 
     ma_ser = InvestorSerializeSingle()
     ser_data = ma_ser.dump(user_obj)
+    startup_user_check = lambda email: Startup.objects.filter(email=email).first()
+    connected_data = {startup_user_check(k).company_name: True if startup_user_check(k) else None for k,v in ser_data["connected"].items() }
+    ser_data["connected"] = connected_data
     ret_obj = jsonify({"result": True, "data": ser_data})
     ret_obj.headers.add('Access-Control-Allow-Origin', '*')
     return ret_obj
@@ -178,7 +195,8 @@ def startup_account():
 
     if request.method == "GET":
         return_data = all_str_data()
-        return render_template('startup.html', inv_data=return_data)
+        return render_template('startup.html', inv_data=return_data,
+                               str_search_data={"result": False})
 
     elif request.method == "POST":
         if request.files:
@@ -193,6 +211,17 @@ def startup_account():
                 return redirect(url_for("admin.startup_account"))
             else:
                 flash("Some problem occurred while processing the file")
+                return redirect(url_for("admin.startup_account"))
+
+        elif request.form.get("first_name") or request.form.get("last_name"):
+            search_data = get_user_data(request.form.get("first_name"),
+                                        request.form.get("last_name"), True)
+            return_data = all_str_data()
+            if search_data["result"]:
+                return render_template("startup.html",inv_data=return_data,
+                                       str_search_data=search_data)
+            else:
+                flash("No such user found")
                 return redirect(url_for("admin.startup_account"))
 
         if request.form.get('approve'):
@@ -229,6 +258,12 @@ def get_startup_data():
 
     ma_ser = StartupSerializeSingle()
     ser_data = ma_ser.dump(user_obj)
+    investor_user_check = lambda email: Investor.objects.filter(email=email).first()
+    connected_data = {
+        f"{investor_user_check(k).first_name} {investor_user_check(k).last_name}": True
+        if investor_user_check(k) else None for k, v in ser_data["connected"].items()
+    }
+    ser_data["connected"] = connected_data
     ret_obj = jsonify({"result": True, "data": ser_data})
     ret_obj.headers.add('Access-Control-Allow-Origin', '*')
     return ret_obj
@@ -240,15 +275,15 @@ def get_startup_data():
 @admin_blueprint.route('/deals-per-week', methods=["GET", "POST"])
 @login_required
 def deals_per_week():
-    def helper_function(new_limit: int, collection: (Investor, Startup)):
+    def helper_function(new_limit: int, collection: (Investor, Startup), is_inv: bool):
         limit = 50
-        total_inv_count = collection.objects.count()
-        for offset in range(0, total_inv_count, limit):
-            inv_data_chunk = collection.objects.skip(offset).limit(limit)
-            for user in inv_data_chunk:
+        total_count = collection.objects.count()
+        for offset in range(0, total_count, limit):
+            data_chunk = collection.objects.skip(offset).limit(limit)
+            for user in data_chunk:
                 setattr(user, "show_limit", new_limit)
                 user.save()
-                update_into_matching(user.email, new_limit, True)
+                update_into_matching(user.email, new_limit, is_inv)
         clean_discover()
 
     if request.method == "GET":
@@ -257,13 +292,13 @@ def deals_per_week():
     elif request.method == "POST":
         if request.form.get("inv_deals"):
             new_limit = int(request.form.get("inv_deals"))
-            helper_function(new_limit, Investor)
+            helper_function(new_limit, Investor, True)
             flash(f"All investor's show limit updated to {new_limit}")
             return render_template("deals_per_week.html")
 
         elif request.form.get("str_deals"):
             new_limit = int(request.form.get("str_deals"))
-            helper_function(new_limit, Startup)
+            helper_function(new_limit, Startup, False)
             flash(f"All Startup's show limit updated to {new_limit}")
             return render_template("deals_per_week.html")
 
@@ -345,26 +380,22 @@ def startup_bulk_approve():
 
 
 #<==================================================================================================>
-#                                         ANALYTICS
+#                                  ANALYTICS, CHURN AND RETENTION
 #<==================================================================================================>
-@admin_blueprint.route('/analytics', methods=["GET"])
+@admin_blueprint.route('/analytics', methods=["GET", "POST"])
 @login_required
 def analytics():
-    data = complete_analytics()
-    return render_template("analytics.html", data=data)
+    def all_data(inv_pg, str_pg):
+        run_all()
+        data = complete_analytics()
+        inv_data = investor_retention(inv_pg)
+        str_data = startup_retention(str_pg)
+        return data, inv_data, str_data
 
-
-#<==================================================================================================>
-#                                         RETENTION
-#<==================================================================================================>
-@admin_blueprint.route('/retention', methods=["GET", "POST"])
-@login_required
-def retention():
     if request.method == "GET":
-        inv_data = investor_retention(0)
-        str_data = startup_retention(0)
+        data, inv_data, str_data = all_data(0,0)
         su_data = {"result": False, "data": None}
-        return render_template("retention.html", inv_data=inv_data,
+        return render_template("analytics.html", data=data,inv_data=inv_data,
                                str_data=str_data, su_data=su_data)
 
     elif request.method == "POST":
@@ -375,25 +406,20 @@ def retention():
             su_data = user_retention(email, is_inv)
             if not su_data.get("result"):
                 flash(su_data.get("error"))
-                return redirect(url_for("admin.retention"))
+                return redirect(url_for("admin.analytics"))
             else:
-                inv_data = investor_retention(0)
-                str_data = startup_retention(0)
-                return render_template("retention.html", inv_data=inv_data,
-                                       str_data=str_data, su_data=su_data)
+                return redirect(url_for("admin.analytics"))
 
         elif request.form.get("inv_page"):
             page_no = request.form.get('inv_page')
-            inv_data = investor_retention(page_no)
-            str_data = startup_retention(0)
+            data, inv_data, str_data = all_data(page_no, 0)
             su_data = {"result": False, "data": None}
-            return render_template("retention.html", inv_data=inv_data,
+            return render_template("analytics.html", data=data, inv_data=inv_data,
                                    str_data=str_data, su_data=su_data)
 
         elif request.form.get("str_page"):
             page_no = request.form.get('str_page')
-            inv_data = investor_retention(0)
-            str_data = startup_retention(page_no)
+            data, inv_data, str_data = all_data(0, page_no)
             su_data = {"result": False, "data": None}
-            return render_template("retention.html", inv_data=inv_data,
+            return render_template("analytics.html", data=data, inv_data=inv_data,
                                    str_data=str_data, su_data=su_data)

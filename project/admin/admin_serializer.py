@@ -33,7 +33,7 @@ class InvestorSerializeSingle(ma.Schema):
     class Meta:
         fields = ("deals", "angel", "created", "location", "approved", "first_name",
                   "email_confirmed", "bio", "sectors", "syndicate", "accreditation",
-                  "profile_pic_link", "last_name ", "email", "connected")
+                  "profile_pic_link", "last_name ", "email", "connected", "prior_investments")
 
 
 
