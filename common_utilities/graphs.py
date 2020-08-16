@@ -21,7 +21,7 @@ def helper_function(inv_collection, str_collection):
 
     str_data = str_collection.objects.order_by('-id').limit(5)
     str_count = [i.count for i in str_data]
-    return dates, inv_count, str_count
+    return dates[::-1], inv_count[::-1], str_count[::-1]
 
 
 #<==================================================================================================>
