@@ -22,15 +22,15 @@ def get_user_data(first_name, last_name, is_inv):
     ln_regex = re.compile(f".*{last_name}.*", re.IGNORECASE)
 
     if first_name and last_name:
-        user_obj = collection.objects(first_name=fn_regex, last_name=ln_regex)
+        user_obj = collection.objects(first_name=fn_regex, last_name=ln_regex).limit(20)
     elif first_name:
-        user_obj = collection.objects(first_name=fn_regex)
+        user_obj = collection.objects(first_name=fn_regex).limit(20)
     elif last_name:
-        user_obj = collection.objects(last_name=ln_regex)
+        user_obj = collection.objects(last_name=ln_regex).limit(20)
 
     if not user_obj:
         return {"result": False, "data": None}
 
     ma_ser = serialise_collection()
-    ser_data = ma_ser.dump(user_obj[:20], many=True)
+    ser_data = ma_ser.dump(user_obj, many=True)
     return {"result": True, "data": ser_data}

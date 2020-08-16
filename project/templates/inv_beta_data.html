@@ -197,7 +197,7 @@
         <form method="POST">
             <button type="submit" name="action" value="delete_records" class="btn btn-primary btn-lg btn-block">Delete All Links</button>
         </form>
-    <br>
+        <br>
 
         {% if inv_beta["result"] %}
             <table class="table">
@@ -213,9 +213,9 @@
                 <tbody>
                 {% for inv in inv_beta["data"] %}
                     <tr>
-                        {% for k,v in inv.items() %}
-                            <td>{{ v }}</td>
-                        {% endfor %}
+                        <td>{{ inv.get("email") }}</td>
+                        <td>{{ inv.get("password") }}</td>
+                        <td>{{ inv.get("confirmation_link") }}</td>
                     </tr>
                 {% endfor %}
                 </tbody>

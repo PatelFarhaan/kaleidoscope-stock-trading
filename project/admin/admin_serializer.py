@@ -54,4 +54,4 @@ class StartupSerializeSingle(ma.Schema):
 # <==================================================================================================>
 class InvestorBetaSchema(ma.Schema):
     class Meta:
-        fields = ("confirmation_link", "password", "email")
+        fields = ("email", "password", "confirmation_link")

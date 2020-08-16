@@ -143,7 +143,8 @@ def investor_account():
         elif request.form.get("page"):
             page_no = request.form.get('page')
             return_data = all_inv_data(page_no)
-            return render_template('investor.html', inv_data=return_data)
+            return render_template('investor.html', inv_data=return_data,
+                                   inv_search_data={"result": False})
         return redirect(url_for('admin.investor_account'))
 
 
@@ -215,7 +216,7 @@ def startup_account():
 
         elif request.form.get("first_name") or request.form.get("last_name"):
             search_data = get_user_data(request.form.get("first_name"),
-                                        request.form.get("last_name"), True)
+                                        request.form.get("last_name"), False)
             return_data = all_str_data()
             if search_data["result"]:
                 return render_template("startup.html",inv_data=return_data,
@@ -244,7 +245,8 @@ def startup_account():
         elif request.form.get("page"):
             page_no = request.form.get('page')
             return_data = all_str_data(page_no)
-            return render_template('startup.html', inv_data=return_data)
+            return render_template('startup.html', inv_data=return_data,
+                                   str_search_data={"result": False})
         return redirect(url_for('admin.startup_account'))
 
 
@@ -304,9 +306,9 @@ def deals_per_week():
 
 
 #<==================================================================================================>
-#                                       INVESTORS DATA POPULATE
+#                                 INVESTORS BETA LINKS POPULATE
 #<==================================================================================================>
-@admin_blueprint.route('/inv-data-populate', methods=["GET", "POST"])
+@admin_blueprint.route('/inv-beta-links', methods=["GET", "POST"])
 @login_required
 def inv_data_populate():
     def get_data():
