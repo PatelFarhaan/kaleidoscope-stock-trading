@@ -439,23 +439,18 @@
                                            $('#inv_name').html(data["data"]["first_name"] + " " + data["data"]["last_name"])
                                            $('#inv_loc').html(data["data"]["location"])
                                            $('#inv_bio').html(data["data"]["bio"])
-                           
-                           
-                           
-                           
+
+
                                            connected_array = data["data"]["connected"]
                                            var jq_connected_array = [];
-                           
                                            $.each(connected_array, function (key, value) {
                                                jq_connected_array.push(key + "<br>")
                                            });
                                            $('#inv_connected').html(jq_connected_array.join(""))
-                           
-                           
-                           
+
+
                                            investments_array = data["data"]["prior_investments"]
                                            var jq_investments_array = [];
-                           
                                            $.each(investments_array, function (key, value) {
                                                jq_investments_array.push(value.name + ": " + value.year + "<br>")
                                            });

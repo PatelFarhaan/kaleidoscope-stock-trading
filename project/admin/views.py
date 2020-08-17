@@ -266,6 +266,7 @@ def get_startup_data():
         if investor_user_check(k) else None for k, v in ser_data["connected"].items()
     }
     ser_data["connected"] = connected_data
+    print("\n\n\n",ser_data["first_name"], ser_data["slide_deck"],  "\n\n\n")
     ret_obj = jsonify({"result": True, "data": ser_data})
     ret_obj.headers.add('Access-Control-Allow-Origin', '*')
     return ret_obj
