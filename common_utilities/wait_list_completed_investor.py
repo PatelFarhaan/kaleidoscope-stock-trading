@@ -93,8 +93,7 @@ def wait_list_over_inv(user_email, first_name):
 
         h1 {{
             font-size: 28px !important;
-            font-family: Lato;
-            font-weight: 500;
+            font-weight: 400;
             color: #707070;
         }}
 
@@ -303,7 +302,7 @@ def wait_list_over_inv(user_email, first_name):
                 Spend more time looking at startups you care about.
             </p>
             <p class="sizing font-purple">
-                <strong>Get introduced to your favorite startups.</strong><br>
+                <strong>Get introduced to your favorite startups via email.</strong><br>
                 We'll send a warm intro straight to your inbox.
             </p>
         </div>

@@ -400,14 +400,11 @@
                                             success: function(data) {
 
 
-
-
                                                 if (data["data"]["profile_pic_link"]) {
                                                     $('#str_img').attr('src', data["data"]["profile_pic_link"])
                                                 } else {
                                                     $('#str_img').attr('src', "../static/images/Google Fonts Downloads/"+data["data"]["first_name"][0].toUpperCase()+".png" )
                                                 }
-
 
                                                 if (data["data"]["slide_deck"]) {
                                                     $('#str_sd').attr('href', data["data"]["slide_deck"]).addClass("btn-primary")

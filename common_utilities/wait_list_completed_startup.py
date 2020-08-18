@@ -92,8 +92,7 @@ def wait_list_over_str(user_email, first_name):
 
         h1 {{
             font-size: 28px !important;
-            font-family: Lato;
-            font-weight: 500;
+            font-weight: 400;
             color: #707070;
         }}
 
@@ -283,7 +282,7 @@ def wait_list_over_str(user_email, first_name):
         <p class="sizing">
             <strong>You’ve made it! You’re off the waitlist!
             </strong> <br>
-            We’re thrilled to start introducing you to relevant startups every week on
+            We’re thrilled to start introducing you to relevant investors every week on
             Angelfund.ai.
         </p>
 
@@ -299,11 +298,15 @@ def wait_list_over_str(user_email, first_name):
             </p>
             <p class="sizing font-purple">
                 <strong>Now, we'll show you relevant investors.</strong><br>
-                Find and invite angel investors who actively invest in startups like yours
+                Find and invite angel investors who actively invest in startups like yours.
             </p>
             <p class="sizing font-purple">
                 <strong>Get introduced to your favorites.</strong><br>
                 We'll send a warm intro via email connecting you with interested investors.
+            </p>
+            <br />
+            <p class="sizing">
+                Be sure to fill out the rest of your profile ASAP: you won’t be able to view new investors until you have a complete profile.
             </p>
         </div>
 

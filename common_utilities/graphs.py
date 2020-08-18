@@ -73,7 +73,7 @@ def signup_graph():
     plt.ylabel('Users')
 
     plt.title('New Signup Graphs')
-    plt.savefig('/Users/farhaan/projects/admin/project/static/graphs/signup_graph.png')
+    plt.savefig('/home/ubuntu/admin/project/static/graphs/signup_graph.png')
     plt.close()
     return
 
@@ -93,7 +93,7 @@ def unique_user_graph():
     plt.ylabel('Users')
 
     plt.title('Active User Graphs')
-    plt.savefig('/Users/farhaan/projects/admin/project/static/graphs/unique_user_graph.png')
+    plt.savefig('/home/ubuntu/admin/project/static/graphs/unique_user_graph.png')
     plt.close()
     return
 
@@ -117,7 +117,7 @@ def retention_graph():
     plt.ylabel('Users')
 
     plt.title('Retention Overview')
-    plt.savefig('/Users/farhaan/projects/admin/project/static/graphs/retention_graph.png')
+    plt.savefig('/home/ubuntu/admin/project/static/graphs/retention_graph.png')
     plt.close()
     ##############################################################################
 
@@ -134,7 +134,7 @@ def retention_graph():
     plt.ylabel('Users')
 
     plt.title('Churn Overview')
-    plt.savefig('/Users/farhaan/projects/admin/project/static/graphs/churn_graph.png')
+    plt.savefig('/home/ubuntu/admin/project/static/graphs/churn_graph.png')
     plt.close()
     ##############################################################################
     return
