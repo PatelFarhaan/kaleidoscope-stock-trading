@@ -15,11 +15,11 @@ from project.models import (InvDailyNewUsers, StrDailyNewUsers, StrUniqueUsersDa
 #<==================================================================================================>
 def helper_function(inv_collection, str_collection):
 
-    inv_data = inv_collection.objects.order_by('-id').limit(5)
+    inv_data = inv_collection.objects.order_by('-id').limit(30)
     inv_count = [i.count for i in inv_data]
-    dates = [i.current_dt.strftime('%d %b %Y') for i in inv_data]
+    dates = [i.current_dt.strftime('%d %b %Y')[:-2] for i in inv_data]
 
-    str_data = str_collection.objects.order_by('-id').limit(5)
+    str_data = str_collection.objects.order_by('-id').limit(30)
     str_count = [i.count for i in str_data]
     return dates[::-1], inv_count[::-1], str_count[::-1]
 
@@ -42,7 +42,7 @@ def retention_calculation(retention_list, days):
             formula = (current / previous)
             retention = formula
             churn = (1 - formula)
-            dates.append(data_chunk[-1].get("date"))
+            dates.append(data_chunk[-1].get("date")[2:])
             ret_data.append(float(f"{retention:.2f}"))
             churn_data.append(float(f"{churn:.2f}"))
     return dates, ret_data, churn_data
@@ -71,9 +71,11 @@ def signup_graph():
 
     plt.xlabel('Date')
     plt.ylabel('Users')
+    fig = plt.gcf()
+    fig.set_size_inches(14, 5)
 
     plt.title('New Signup Graphs')
-    plt.savefig('/home/ubuntu/admin/project/static/graphs/signup_graph.png')
+    plt.savefig('/home/ubuntu/admin/project/static/graphs/signup_graph.png', dpi=100)
     plt.close()
     return
 
@@ -91,6 +93,8 @@ def unique_user_graph():
 
     plt.xlabel('Date')
     plt.ylabel('Users')
+    fig = plt.gcf()
+    fig.set_size_inches(14, 5)
 
     plt.title('Active User Graphs')
     plt.savefig('/home/ubuntu/admin/project/static/graphs/unique_user_graph.png')
@@ -104,8 +108,8 @@ def unique_user_graph():
 def retention_graph():
     inv_obj = InvRetention.objects.all()[0]
     str_obj = StrRetention.objects.all()[0]
-    dates, inv_ret_data, inv_churn_data = retention_calculation(inv_obj.daily[-6::], 1)
-    dates, str_ret_data, str_churn_data = retention_calculation(str_obj.daily[-6::], 1)
+    dates, inv_ret_data, inv_churn_data = retention_calculation(inv_obj.daily[-31::], 1)
+    dates, str_ret_data, str_churn_data = retention_calculation(str_obj.daily[-31::], 1)
 
     ##############################################################################
     plt.plot(dates, inv_ret_data, color='green', linestyle='dashed', linewidth = 3,
@@ -115,6 +119,8 @@ def retention_graph():
 
     plt.xlabel('Date')
     plt.ylabel('Users')
+    fig = plt.gcf()
+    fig.set_size_inches(14, 5)
 
     plt.title('Retention Overview')
     plt.savefig('/home/ubuntu/admin/project/static/graphs/retention_graph.png')
@@ -132,6 +138,8 @@ def retention_graph():
 
     plt.xlabel('Date')
     plt.ylabel('Users')
+    fig = plt.gcf()
+    fig.set_size_inches(14, 5)
 
     plt.title('Churn Overview')
     plt.savefig('/home/ubuntu/admin/project/static/graphs/churn_graph.png')
@@ -147,3 +155,7 @@ def run_all():
     signup_graph()
     retention_graph()
     unique_user_graph()
+
+
+sd = "/Users/farhaan/projects/admin/project/static/graphs"
+temp = "/home/ubuntu/admin/project/static/graphs"

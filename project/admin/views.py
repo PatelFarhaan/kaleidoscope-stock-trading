@@ -161,6 +161,16 @@ def get_investor_data():
     startup_user_check = lambda email: Startup.objects.filter(email=email).first()
     connected_data = {startup_user_check(k).company_name: True if startup_user_check(k) else None for k,v in ser_data["connected"].items() }
     ser_data["connected"] = connected_data
+    deals_mapping = {
+        "0": "$0 - $10 000",
+        "10": "$10 000 - $25 000",
+        "25": "$25 000 - $50 000",
+        "50": "$50 000 - $100 000",
+        "100": "$100 000 - $250 000",
+        "250": "$250 000 - $500 000",
+        "500": "$500 000+"
+    }
+    ser_data["deals"] = deals_mapping[ser_data["deals"][0]]
     ret_obj = jsonify({"result": True, "data": ser_data})
     ret_obj.headers.add('Access-Control-Allow-Origin', '*')
     return ret_obj
@@ -267,8 +277,9 @@ def get_startup_data():
     }
     ser_data["connected"] = connected_data
     company_link = ser_data.get("company_link")
-    if not company_link.startswith("https://"):
-        ser_data["company_link"] = "https://" + company_link
+    if company_link:
+        if not company_link.startswith("https://"):
+            ser_data["company_link"] = "https://" + company_link
 
     ret_obj = jsonify({"result": True, "data": ser_data})
     ret_obj.headers.add('Access-Control-Allow-Origin', '*')

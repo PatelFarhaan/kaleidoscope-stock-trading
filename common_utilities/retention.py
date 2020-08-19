@@ -75,9 +75,9 @@ def churn_and_retention(retention_list, days):
         if is_consecutive:
             return f"100%", f"100%"
         else:
-            return "0%", "0%"
+            return "0%", "-100%"
     else:
-        return "0%", "0%"
+        return "-", "-"
 
 
 #<==================================================================================================>
