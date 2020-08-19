@@ -81,9 +81,9 @@ def signup_graph(path):
     dates, inv_ret_data, str_ret_data = list_equal_len_checker(dates, inv_count,
                                                                str_count)
 
-    plt.plot(dates, inv_count, color='green', linestyle='dashed', linewidth = 3,
+    plt.plot(dates, inv_ret_data, color='green', linestyle='dashed', linewidth = 3,
              marker='o', markerfacecolor='blue', markersize=12)
-    plt.plot(dates, str_count, color='red', linestyle='dashed', linewidth = 3,
+    plt.plot(dates, str_ret_data, color='red', linestyle='dashed', linewidth = 3,
              marker='o', markerfacecolor='blue', markersize=12)
 
     plt.xlabel('Date')
