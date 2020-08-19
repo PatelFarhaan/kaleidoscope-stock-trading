@@ -170,7 +170,9 @@ def get_investor_data():
         "250": "$250 000 - $500 000",
         "500": "$500 000+"
     }
-    ser_data["deals"] = deals_mapping[ser_data["deals"][0]]
+    if ser_data["deals"]:
+        ser_data["deals"] = deals_mapping[ser_data["deals"][0]]
+
     ret_obj = jsonify({"result": True, "data": ser_data})
     ret_obj.headers.add('Access-Control-Allow-Origin', '*')
     return ret_obj
