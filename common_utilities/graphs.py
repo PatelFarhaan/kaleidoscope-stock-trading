@@ -13,6 +13,24 @@ from project.models import (InvDailyNewUsers, StrDailyNewUsers, StrUniqueUsersDa
 #<==================================================================================================>
 #                                          SIGNUP GRPAHS
 #<==================================================================================================>
+def list_equal_len_checker(arr1, arr2, arr3):
+    _min_len = min(len(arr1), len(arr2), len(arr3))
+    if len(arr1) > _min_len:
+        arr1 = arr1[:_min_len]
+
+    if len(arr2) > _min_len:
+        arr2 = arr2[:_min_len]
+
+    if len(arr3) > _min_len:
+        arr3 = arr3[:_min_len]
+
+    print(len(arr1), len(arr2), len(arr3))
+    return arr1, arr2, arr3
+
+
+#<==================================================================================================>
+#                                          SIGNUP GRPAHS
+#<==================================================================================================>
 def helper_function(inv_collection, str_collection):
 
     inv_data = inv_collection.objects.order_by('-id').limit(30)
@@ -60,6 +78,8 @@ def consecutive_check(current, previous, days):
 def signup_graph(path):
 
     dates, inv_count, str_count = helper_function(InvDailyNewUsers, StrDailyNewUsers)
+    dates, inv_ret_data, str_ret_data = list_equal_len_checker(dates, inv_count,
+                                                               str_count)
 
     plt.plot(dates, inv_count, color='green', linestyle='dashed', linewidth = 3,
              marker='o', markerfacecolor='blue', markersize=12)
@@ -82,10 +102,12 @@ def signup_graph(path):
 #<==================================================================================================>
 def unique_user_graph(path):
     dates, inv_count, str_count = helper_function(InvUniqueUsersDaily, StrUniqueUsersDaily)
+    dates, inv_ret_data, str_ret_data = list_equal_len_checker(dates, inv_count,
+                                                               str_count)
 
-    plt.plot(dates, inv_count, color='green', linestyle='dashed', linewidth = 3,
+    plt.plot(dates, inv_ret_data, color='green', linestyle='dashed', linewidth = 3,
              marker='o', markerfacecolor='blue', markersize=12)
-    plt.plot(dates, str_count, color='red', linestyle='dashed', linewidth = 3,
+    plt.plot(dates, str_ret_data, color='red', linestyle='dashed', linewidth = 3,
              marker='o', markerfacecolor='blue', markersize=12)
 
     plt.xlabel('Date')
@@ -107,6 +129,9 @@ def retention_graph(path):
     str_obj = StrRetention.objects.all()[0]
     dates, inv_ret_data = retention_calculation(inv_obj.daily[-31::], 1)
     dates, str_ret_data = retention_calculation(str_obj.daily[-31::], 1)
+    dates, inv_ret_data, str_ret_data = list_equal_len_checker(dates, inv_ret_data,
+                                                               str_ret_data)
+
 
     ##############################################################################
     plt.plot(dates, inv_ret_data, color='green', linestyle='dashed', linewidth = 3,
