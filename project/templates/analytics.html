@@ -363,9 +363,6 @@
                     <th scope="col">Daily Ret</th>
                     <th scope="col">Weekly Ret</th>
                     <th scope="col">Monthly Ret</th>
-                    <th scope="col">Daily Churn</th>
-                    <th scope="col">Weekly Churn</th>
-                    <th scope="col">Monthly Churn</th>
                     <th scope="col">Last Login</th>
                 </tr>
                 </thead>
@@ -375,9 +372,6 @@
                     <td align="center">{{ su_data["data"]["daily_ret"] }}</td>
                     <td align="center">{{ su_data["data"]["weekly_ret"] }}</td>
                     <td align="center">{{ su_data["data"]["monthly_ret"] }}</td>
-                    <td align="center">{{ su_data["data"]["daily_churn"] }}</td>
-                    <td align="center">{{ su_data["data"]["weekly_churn"] }}</td>
-                    <td align="center">{{ su_data["data"]["monthly_churn"] }}</td>
                     <td align="center">{{ su_data["data"]["last_login"] }}</td>
 
                 </tr>
@@ -401,9 +395,6 @@
                 <th scope="col">Daily Ret</th>
                 <th scope="col">Weekly Ret</th>
                 <th scope="col">Monthly Ret</th>
-                <th scope="col">Daily Churn</th>
-                <th scope="col">Weekly Churn</th>
-                <th scope="col">Monthly Churn</th>
                 <th scope="col">Last Login</th>
 
             </tr>
@@ -416,9 +407,6 @@
                         <td align="center">{{ user["daily_ret"] }}</td>
                         <td align="center">{{ user["weekly_ret"] }}</td>
                         <td align="center">{{ user["monthly_ret"] }}</td>
-                        <td align="center">{{ user["daily_churn"] }}</td>
-                        <td align="center">{{ user["weekly_churn"] }}</td>
-                        <td align="center">{{ user["monthly_churn"] }}</td>
                         <td align="center">{{ user["last_login"] }}</td>
 
                     </tr>
@@ -451,9 +439,6 @@
                 <th scope="col">Daily Ret</th>
                 <th scope="col">Weekly Ret</th>
                 <th scope="col">Monthly Ret</th>
-                <th scope="col">Daily Churn</th>
-                <th scope="col">Weekly Churn</th>
-                <th scope="col">Monthly Churn</th>
                 <th scope="col">Last Login</th>
 
             </tr>
@@ -466,9 +451,6 @@
                         <td align="center">{{ user["daily_ret"] }}</td>
                         <td align="center">{{ user["weekly_ret"] }}</td>
                         <td align="center">{{ user["monthly_ret"] }}</td>
-                        <td align="center">{{ user["daily_churn"] }}</td>
-                        <td align="center">{{ user["weekly_churn"] }}</td>
-                        <td align="center">{{ user["monthly_churn"] }}</td>
                         <td align="center">{{ user["last_login"] }}</td>
 
                     </tr>
@@ -521,14 +503,7 @@
             <img style="border-radius: 0%; border-style: double;" src="../static/graphs/retention_graph.png" alt="No image found">
         </p>
     </div>
-
     <br>
-
-    <div style="display:flex">
-        <p align="center">
-            <img style="border-radius: 0%; border-style: double;" src="../static/graphs/churn_graph.png" alt="No image found">
-        </p>
-    </div>
 </div>
 
 
