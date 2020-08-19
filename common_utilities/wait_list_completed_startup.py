@@ -304,11 +304,10 @@ def wait_list_over_str(user_email, first_name):
                 <strong>Get introduced to your favorites.</strong><br>
                 We'll send a warm intro via email connecting you with interested investors.
             </p>
-            <br />
-            <p class="sizing">
-                Be sure to fill out the rest of your profile ASAP: you won’t be able to view new investors until you have a complete profile.
-            </p>
         </div>
+        <p class="sizing">
+            Be sure to fill out the rest of your profile ASAP: you won’t be able to view new investors until you have a complete profile.
+        </p>
 
         <div style="text-align: center;">
 
