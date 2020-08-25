@@ -108,7 +108,7 @@ def sectors_data():
             'Moonshots / Hard Tech': 'hardtech',
             'Robotics': 'robotics',
             'Security': 'security',
-            'Sport / Fitness': 'sport',
+            'Sport/Fitness': 'sport',
             'Transportation': 'transport',
             'Travel': 'travel',
             'Virtual Reality': 'vr',
