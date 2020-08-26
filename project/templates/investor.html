@@ -430,8 +430,10 @@
                                            }
                            
                                            if (data["data"]["angel"] == true) {
+                                               $('#inv_angel').html("Angel").removeClass("label-danger")
                                                $('#inv_angel').html("Angel").addClass("label-info")
                                            } else {
+                                               $('#inv_angel').html("Not Angel").removeClass("label-info")
                                                $('#inv_angel').html("Not Angel").addClass("label-danger")
                                            }
                            

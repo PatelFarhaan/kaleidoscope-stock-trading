@@ -173,6 +173,7 @@ def get_investor_data():
     if ser_data["deals"]:
         ser_data["deals"] = deals_mapping[ser_data["deals"][0]]
 
+    ser_data["angel"] = True if ser_data["syndicate"] else False
     ret_obj = jsonify({"result": True, "data": ser_data})
     ret_obj.headers.add('Access-Control-Allow-Origin', '*')
     return ret_obj
