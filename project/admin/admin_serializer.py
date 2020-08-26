@@ -9,8 +9,10 @@ class InvestorSerialize(ma.Schema):
     created = fb.DateTime(format='%d %b %Y')
 
     class Meta:
-        fields = ("angel", "email", "created", "location", "approved", "first_name",
-                  "last_name", "email_confirmed", "profile_pic_link")
+        strict = True
+
+        fields = ("email", "created", "location", "approved", "first_name",
+                  "last_name", "email_confirmed", "profile_pic_link", "syndicate")
 
 
 #<==================================================================================================>
