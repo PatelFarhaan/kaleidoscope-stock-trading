@@ -28,6 +28,7 @@ def startup_data(csv_path, file_location):
         i = dict(i)
 
         email = i["email"].lower()
+        i["email"] = i["email"].lower()
         user_exist_check = Startup.objects.filter(email=email).first()
         if user_exist_check:
             continue
@@ -45,12 +46,14 @@ def startup_data(csv_path, file_location):
         if i["co_founders"] == "":
             i["co_founders"] = []
         else:
-            i["co_founders"] = list(ast.literal_eval(json.dumps(i["co_founders"].strip())))
+            i["co_founders"] = list(ast.literal_eval(i["co_founders"].strip()))
 
         if i["num_team_members"] == "":
             i["num_team_members"] = 0
         else:
             i["num_team_members"] = int(float(i["num_team_members"]))
+
+        i["show_profile"] = True
 
         users_count = collection.estimated_document_count()
         if users_count == 0:

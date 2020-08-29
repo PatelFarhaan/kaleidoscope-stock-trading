@@ -28,6 +28,7 @@ def investor_data(csv_path, file_location):
         i = dict(i)
 
         email = i["email"].lower()
+        i["email"] = i["email"].lower()
         user_exist_check = Investor.objects.filter(email=email).first()
         if user_exist_check:
             continue
@@ -49,6 +50,8 @@ def investor_data(csv_path, file_location):
             i["accreditation"] = str(int(float(i["accreditation"])))
         except:
             i["accreditation"] = "nothing"
+
+        i["show_profile"] = True
 
         users_count = collection.estimated_document_count()
         if users_count == 0:
