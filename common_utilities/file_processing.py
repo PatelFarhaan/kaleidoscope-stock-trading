@@ -10,12 +10,13 @@ sys.path.append("../")
 from common_utilities.beta_inv_data import investor_beta_data
 from common_utilities.strartup_data_populate import startup_data
 from common_utilities.investor_data_populate import investor_data
+from common_utilities.discover_data_upload import discover_cards_data
 
 
 #<==================================================================================================>
 #                                  FILE PROCESSING
 #<==================================================================================================>
-def file_process(file_obj, is_inv, is_beta=False):
+def file_process(file_obj, is_inv, is_beta=False, is_discover=False):
     file_name = file_obj.filename.replace(' ', '').split('.', 1)[0]
 
     file_location = f"{os.getcwd()}/{str(uuid.uuid4())}"
@@ -32,6 +33,9 @@ def file_process(file_obj, is_inv, is_beta=False):
         read_file.to_csv(file_path)
     except:
         return False
+
+    if is_discover:
+        return discover_cards_data(file_path, file_location, is_inv)
 
     if is_beta:
         if is_inv:

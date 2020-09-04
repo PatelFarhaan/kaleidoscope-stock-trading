@@ -34,3 +34,22 @@ def get_user_data(first_name, last_name, is_inv):
     ma_ser = serialise_collection()
     ser_data = ma_ser.dump(user_obj, many=True)
     return {"result": True, "data": ser_data}
+
+
+#<==================================================================================================>
+#                                  GET COMPANY DETAILS FUNCTION
+#<==================================================================================================>
+def get_company_data(company_name):
+    collection = Startup
+    serialise_collection = StartupSerialize
+
+    company_name = company_name.strip()
+    cn_regex = re.compile(f".*{company_name}.*", re.IGNORECASE)
+    user_obj = collection.objects(company_name=cn_regex).limit(20)
+
+    if not user_obj:
+        return {"result": False, "data": None}
+
+    ma_ser = serialise_collection()
+    ser_data = ma_ser.dump(user_obj, many=True)
+    return {"result": True, "data": ser_data}

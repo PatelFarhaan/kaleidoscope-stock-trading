@@ -28,6 +28,7 @@ class AdminPortal(db.Document, UserMixin):
     meta = dict(indexes=['email'])
 
 
+
 #<==================================================================================================>
 #                                    INVESTOR COLLECTION
 #<==================================================================================================>
@@ -41,12 +42,10 @@ class Investor(db.Document, UserMixin):
     syndicate = db.ListField()
     location = db.StringField()
     password = db.StringField()
+    discover_cards = db.ListField()
     accreditation = db.StringField()
     prior_investments = db.ListField()
     show_limit = db.IntField(default=3)
-    matched_week = db.IntField(default=0)
-    count_passed = db.IntField(default=0)
-    count_invited = db.IntField(default=0)
     all_transaction_fields = db.DictField()
     investor = db.BooleanField(default=True)
     password_reset_meta_data = db.DictField()
@@ -63,6 +62,7 @@ class Investor(db.Document, UserMixin):
     is_google_signup = db.BooleanField(default=False)
     email = db.EmailField(required=True, unique=True)
     monday_notification = db.BooleanField(default=True)
+    total_transaction_this_week = db.IntField(default=0)
     prior_inv_completed = db.BooleanField(default=False)
     first_dashboard_visit = db.BooleanField(default=True)
     invite_accepted_notify = db.BooleanField(default=True)
@@ -90,13 +90,11 @@ class Startup(db.Document, UserMixin):
     location = db.StringField()
     co_founders = db.ListField()
     slide_deck = db.StringField()
+    discover_cards = db.ListField()
     company_name = db.StringField()
     num_team_members = db.IntField()
     startup_pitch = db.StringField()
     show_limit = db.IntField(default=3)
-    count_passed = db.IntField(default=0)
-    matched_week = db.IntField(default=0)
-    count_invited = db.IntField(default=0)
     all_transaction_fields = db.DictField()
     investor = db.BooleanField(default=False)
     password_reset_meta_data = db.DictField()
@@ -117,11 +115,21 @@ class Startup(db.Document, UserMixin):
     co_founders_check = db.BooleanField(default=False)
     company_logo_check = db.BooleanField(default=False)
     monday_notification = db.BooleanField(default=True)
+    total_transaction_this_week = db.IntField(default=0)
     first_dashboard_visit = db.BooleanField(default=True)
     invite_accepted_notify = db.BooleanField(default=True)
     created = db.DateTimeField(default=datetime.datetime.now)
 
     meta = dict(indexes=['email', '-created', 'is_google_signup'])
+
+
+#<==================================================================================================>
+#                                       INVITE CODES
+#<==================================================================================================>
+class InviteCodes(db.Document):
+    codes = db.DictField()
+
+    meta = dict(indexes=['codes'])
 
 
 #<==================================================================================================>

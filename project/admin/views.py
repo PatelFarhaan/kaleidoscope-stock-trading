@@ -7,13 +7,13 @@ from common_utilities.delete_user import delete_a_user
 from common_utilities.analtics import complete_analytics
 from common_utilities.file_processing import file_process
 from common_utilities.account_approve import approve_account
+from common_utilities.invite_code_logic import generate_code
 from flask_login import login_required, login_user, logout_user
-from common_utilities.records_search_by_name import get_user_data
 from common_utilities.account_disapprove import disapprove_account
 from project.models import Investor, Startup, AdminPortal, InvestorBetaData
-from common_utilities.matching_db_updates import update_into_matching, clean_discover
-from common_utilities.retention import investor_retention, startup_retention, user_retention
+from common_utilities.records_search_by_name import get_user_data, get_company_data
 from flask import Blueprint, render_template, request, redirect, url_for, jsonify, flash
+from common_utilities.retention import investor_retention, startup_retention, user_retention
 from project.admin.admin_serializer import (InvestorSerialize, StartupSerialize, InvestorBetaSchema,
                                             StartupSerializeSingle, InvestorSerializeSingle)
 
@@ -99,18 +99,34 @@ def investor_account():
 
     elif request.method == "POST":
         if request.files:
-            file_obj = request.files.get('inv_csv')
+            if request.files.get("inv_csv"):
+                file_obj = request.files.get('inv_csv')
 
-            if not file_obj:
-                return redirect(url_for('admin.investor_account'))
+                if not file_obj:
+                    return redirect(url_for('admin.investor_account'))
 
-            res = file_process(file_obj, True)
-            if res:
-                flash("All Investor's updated successfully")
-                return redirect(url_for("admin.investor_account"))
-            else:
-                flash("Some problem occurred while processing the file")
-                return redirect(url_for("admin.investor_account"))
+                res = file_process(file_obj, True, False, False)
+                if res:
+                    flash("All Investor's updated successfully")
+                    return redirect(url_for("admin.investor_account"))
+                else:
+                    flash("Some problem occurred while processing the file")
+                    return redirect(url_for("admin.investor_account"))
+
+            elif request.files.get("inv_discover_card"):
+                file_obj = request.files.get('inv_discover_card')
+
+                if not file_obj:
+                    return redirect(url_for('admin.investor_account'))
+
+                res = file_process(file_obj, True, False, True)
+                if res:
+                    flash("All Investor cards updated successfully")
+                    return redirect(url_for("admin.investor_account"))
+                else:
+                    flash("Some problem occurred while processing the file")
+                    return redirect(url_for("admin.investor_account"))
+
 
         elif request.form.get("first_name") or request.form.get("last_name"):
             search_data = get_user_data(request.form.get("first_name"),
@@ -214,18 +230,34 @@ def startup_account():
 
     elif request.method == "POST":
         if request.files:
-            file_obj = request.files.get('str_csv')
+            if request.files.get("str_csv"):
+                file_obj = request.files.get('str_csv')
 
-            if not file_obj:
-                return redirect(url_for('admin.startup_account'))
+                if not file_obj:
+                    return redirect(url_for('admin.startup_account'))
 
-            res = file_process(file_obj, False)
-            if res:
-                flash("All Startup's updated successfully")
-                return redirect(url_for("admin.startup_account"))
-            else:
-                flash("Some problem occurred while processing the file")
-                return redirect(url_for("admin.startup_account"))
+                res = file_process(file_obj, False, False, False)
+                if res:
+                    flash("All Startup's updated successfully")
+                    return redirect(url_for("admin.startup_account"))
+                else:
+                    flash("Some problem occurred while processing the file")
+                    return redirect(url_for("admin.startup_account"))
+
+            elif request.files.get("str_discover_card"):
+                file_obj = request.files.get('str_discover_card')
+
+                if not file_obj:
+                    return redirect(url_for('admin.startup_account'))
+
+                res = file_process(file_obj, False, False, True)
+                if res:
+                    flash("All Startup cards updated successfully")
+                    return redirect(url_for("admin.startup_account"))
+                else:
+                    flash("Some problem occurred while processing the file")
+                    return redirect(url_for("admin.startup_account"))
+
 
         elif request.form.get("first_name") or request.form.get("last_name"):
             search_data = get_user_data(request.form.get("first_name"),
@@ -238,7 +270,17 @@ def startup_account():
                 flash("No such user found")
                 return redirect(url_for("admin.startup_account"))
 
-        if request.form.get('approve'):
+        elif request.form.get("company_name"):
+            search_data = get_company_data(request.form.get("company_name"))
+            return_data = all_str_data()
+            if search_data["result"]:
+                return render_template("startup.html",inv_data=return_data,
+                                       str_search_data=search_data)
+            else:
+                flash("No such user found")
+                return redirect(url_for("admin.startup_account"))
+
+        elif request.form.get('approve'):
             user_email = request.form.get('approve')
             if not user_email:
                 return redirect(url_for('admin.startup_account'))
@@ -303,8 +345,6 @@ def deals_per_week():
             for user in data_chunk:
                 setattr(user, "show_limit", new_limit)
                 user.save()
-                update_into_matching(user.email, new_limit, is_inv)
-        clean_discover()
 
     if request.method == "GET":
         return render_template("deals_per_week.html")
@@ -343,7 +383,8 @@ def inv_data_populate():
         return data
 
     if request.method == "GET":
-        return render_template("inv_beta_data.html", inv_beta=get_data())
+        return render_template("inv_beta_data.html", inv_beta=get_data(),
+                               invite_code={"result": False})
 
     elif request.method == "POST":
         if request.files:
@@ -351,10 +392,11 @@ def inv_data_populate():
 
             if not file_obj:
                 flash("No file found. Please input a file")
-                return render_template("inv_beta_data.html", inv_beta=get_data())
+                return render_template("inv_beta_data.html", inv_beta=get_data(),
+                                       invite_code={"result": False})
 
             else:
-                res = file_process(file_obj, True, True)
+                res = file_process(file_obj, True, True, False)
                 if res:
                     flash("All Investor's updated successfully")
                     return redirect(url_for('admin.inv_data_populate'))
@@ -366,7 +408,13 @@ def inv_data_populate():
             if action == "delete_records":
                 InvestorBetaData.objects.delete()
                 flash("All beta links deleted")
-                return render_template("inv_beta_data.html", inv_beta=get_data())
+                return render_template("inv_beta_data.html", inv_beta=get_data(),
+                                       invite_code={"result": False})
+
+            elif action == "generate_codes":
+                code = generate_code()
+                return render_template("inv_beta_data.html", inv_beta=get_data(),
+                                       invite_code={"result": True, "data": code})
 
 
 #<==================================================================================================>

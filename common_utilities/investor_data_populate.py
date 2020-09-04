@@ -7,10 +7,7 @@ import ast
 import json
 import shutil
 sys.path.append("../")
-from pymongo import MongoClient
 from project.models import Investor
-from common_utilities import CONSTANT
-from project.serialise_class import InvestorMLSchema
 from werkzeug.security import generate_password_hash
 
 
@@ -18,10 +15,7 @@ from werkzeug.security import generate_password_hash
 #                                      INVESTOR DATA DUMP
 #<==================================================================================================>
 def investor_data(csv_path, file_location):
-    ma_schema = InvestorMLSchema()
     sectors_det = sectors_data()
-
-    collection = db_connection_details()
 
     input = csv.DictReader(open(csv_path))
     for i in input:
@@ -53,33 +47,11 @@ def investor_data(csv_path, file_location):
 
         i["show_profile"] = True
 
-        users_count = collection.estimated_document_count()
-        if users_count == 0:
-            _id = 0
-        else:
-            _id = list(collection.find().skip(users_count-1))[0].get("_id") + 100
-
         new_obj = Investor(**i)
         new_obj.save()
 
-        inv_obj = Investor.objects.filter(email=email).first()
-        resp = ma_schema.dump(inv_obj)
-        resp["_id"] = _id
-        collection.insert_one(resp)
-
     shutil.rmtree(file_location)
     return True
-
-
-#<==================================================================================================>
-#                                   DATABASE CONNECTION DETAILS
-#<==================================================================================================>
-def db_connection_details():
-    remote_mongo_uri = CONSTANT.CURRENT_DATABASE.value
-    mongo_client = MongoClient(remote_mongo_uri)
-    db = mongo_client.matching
-    collection = db.users
-    return collection
 
 
 #<==================================================================================================>
