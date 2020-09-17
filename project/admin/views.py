@@ -199,7 +199,7 @@ def get_investor_data():
 #                              STARTUP ACCOUNT + PAGINATION + SINGLE USER
 #<==================================================================================================>
 @admin_blueprint.route('/startup-account', methods=["GET", "POST"])
-@login_required
+# @login_required
 def startup_account():
     def all_str_data(page_no=0):
         offset = int(page_no) * 10
