@@ -25,8 +25,8 @@ login_manager.login_view = "admin.login"
 #<==================================================================================================>
 #                                    ADMIN PANEL BLUEPRINT
 #<==================================================================================================>
-from project.admin.views import admin_blueprint
+from project.admin.views import trade_blueprint
 from project.error.error_handler import errorpage_blueprint
 
-app.register_blueprint(admin_blueprint)
+app.register_blueprint(trade_blueprint)
 app.register_blueprint(errorpage_blueprint)

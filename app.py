@@ -2,10 +2,15 @@
 #                                       IMPORTS
 #<==================================================================================================>
 from project import app
+from common_utilities.data_populate import shares_test_data_populate
 
 
 #<==================================================================================================>
 #                                      MAIN FUNCTION
 #<==================================================================================================>
 if __name__ == '__main__':
+    try:
+        shares_test_data_populate()
+    except:
+        pass
     app.run(debug=True, host="127.0.0.1", port=5000)
