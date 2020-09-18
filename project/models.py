@@ -12,25 +12,10 @@ from project import db, login_manager
 @login_manager.user_loader
 def user_load(user_id):
     return User.objects.get(pk=user_id)
-#
-#
-# #<==================================================================================================>
-# #                                     ADMIN COLLECTION
-# #<==================================================================================================>
-# class User(db.Document, UserMixin):
-#     password = db.StringField()
-#     email = db.EmailField(required=True, unique=True)
-#     created = db.DateTimeField(default=datetime.datetime.now)
-#
-#     def get_id(self):
-#         return str(self.id)
-#
-#     meta = dict(indexes=['email'])
-
 
 
 #<==================================================================================================>
-#                                    INVESTOR COLLECTION
+#                                    SHARES COLLECTION
 #<==================================================================================================>
 class Shares(db.Document):
     share_name = db.StringField(unique=True)
@@ -40,7 +25,7 @@ class Shares(db.Document):
 
 
 #<==================================================================================================>
-#                                    INVESTOR COLLECTION
+#                                    TRANSACTION COLLECTION
 #<==================================================================================================>
 class Transaction(db.Document):
     date = db.StringField()
@@ -54,7 +39,7 @@ class Transaction(db.Document):
 
 
 #<==================================================================================================>
-#                                    INVESTOR COLLECTION
+#                                    USER COLLECTION
 #<==================================================================================================>
 class User(db.Document, UserMixin):
     password = db.StringField()

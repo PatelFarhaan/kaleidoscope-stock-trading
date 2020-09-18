@@ -1,24 +1,24 @@
 #<==================================================================================================>
 #                                       IMPORTS
 #<==================================================================================================>
-from project.models import User, Shares
 from common_utilities.blotter import Blotter
 from werkzeug.security import check_password_hash
+from project.trade.serializer import SharesSchema
+from project.models import User, Shares, Transaction
 from werkzeug.security import generate_password_hash
 from flask_login import login_required, login_user, logout_user
-from project.admin.admin_serializer import SharesSchema
 from flask import Blueprint, render_template, request, redirect, url_for, flash, session
 
 
 #<==================================================================================================>
-#                                       ADMIN BLUEPRINT
+#                                       TRADE BLUEPRINT
 #<==================================================================================================>
 trade_blueprint = Blueprint('trade', '__name__', template_folder='templates',
                             static_folder='static')
 
 
 #<==================================================================================================>
-#                                      ADMIN PANE LOGIN
+#                                         LOGIN
 #<==================================================================================================>
 @trade_blueprint.route('/', methods=["GET", "POST"])
 def login():
@@ -45,7 +45,7 @@ def login():
 
 
 #<==================================================================================================>
-#                                    ADMIN PANEL LOGOUT
+#                                       LOGOUT
 #<==================================================================================================>
 @trade_blueprint.route('/logout')
 @login_required
@@ -56,7 +56,7 @@ def logout():
 
 
 #<==================================================================================================>
-#                          INVESTOR ACCOUNT + PAGINATION + SINGLE USER
+#                                  TRADE FUNCTIONALITY
 #<==================================================================================================>
 @trade_blueprint.route('/trade-blotter', methods=["GET", "POST"])
 @login_required
@@ -71,7 +71,16 @@ def trade_function():
         available_shares = Shares.objects.all()
         ma_schema = SharesSchema()
         resp = ma_schema.dump(available_shares, many=True)
-        return render_template('index.html', available_shares=resp, users_shares=user_obj.share_holding)
+
+        transaction_obj = Transaction.objects.filter(email=session["email"]).all()
+        transaction_obj = [ {"email": ele.email,
+                              "date": ele.date,
+                              "side": ele.side,
+                              "ticker": ele.ticker,
+                              "trader": ele.trader,
+                              "share_number": ele.share_number} for ele in transaction_obj ]
+        return render_template('index.html', available_shares=resp, users_shares=user_obj.share_holding,
+                               transaction_obj=transaction_obj)
 
     elif request.method == "POST":
         # Entire Traders
@@ -106,19 +115,20 @@ def trade_function():
             order_value = int( (available_shares * int(order_value)) // 100 )
             kwargs_obj["number"] = order_value
 
-        if order_value <= available_shares:
-            blotter_obj.post_transaction(kwargs_obj)
-            flash(f"{side} transaction done on {order_value} successfully.")
-        else:
-            kwargs_obj["number"] = available_shares
-            blotter_obj.post_transaction(kwargs_obj)
-            flash(f"{side} transaction on {order_value} shares are not possible. {side} transaction done on {available_shares} successfully.")
+        if side == "Buy" and order_value > available_shares:
+            flash(f"{order_value} {ticker} not available")
+            return redirect(url_for("trade.trade_function"))
 
+        resp = blotter_obj.post_transaction(kwargs_obj)
+        if not resp.get("message"):
+            flash("Transaction Successfull")
+        else:
+            flash(resp.get("message"))
         return redirect(url_for("trade.trade_function"))
 
 
 #<==================================================================================================>
-#                          INVESTOR ACCOUNT + PAGINATION + SINGLE USER
+#                                       REGISTER
 #<==================================================================================================>
 @trade_blueprint.route("/register", methods=["GET", "POST"])
 def register():

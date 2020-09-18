@@ -9,7 +9,7 @@ from flask_marshmallow import Marshmallow
 
 
 #<==================================================================================================>
-#                                     ADMIN PANEL CONFIG
+#                                     APPLICATION CONFIG
 #<==================================================================================================>
 app = Flask(__name__)
 app.config['SECRET_KEY'] = CONSTANT.SECRET_KEY.value
@@ -19,13 +19,13 @@ db = MongoEngine(app)
 ma = Marshmallow(app)
 
 login_manager = LoginManager(app)
-login_manager.login_view = "admin.login"
+login_manager.login_view = "trade.login"
 
 
 #<==================================================================================================>
 #                                    ADMIN PANEL BLUEPRINT
 #<==================================================================================================>
-from project.admin.views import trade_blueprint
+from project.trade.views import trade_blueprint
 from project.error.error_handler import errorpage_blueprint
 
 app.register_blueprint(trade_blueprint)

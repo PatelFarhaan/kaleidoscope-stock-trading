@@ -178,6 +178,40 @@
             <br>
             <br>
         {% endif %}
+
+
+        {% if transaction_obj %}
+            <h3 align="center">
+                TRANSACTIONS DETAILS
+            </h3>
+            <br>
+            <table class="table">
+                <thead class="thead-dark">
+                <tr>
+                    <th scope="col">Date</th>
+                    <th scope="col">Email</th>
+                    <th scope="col">Trader</th>
+                    <th scope="col">Share Name</th>
+                    <th scope="col">Share Number</th>
+                    <th scope="col">Action</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for ele in transaction_obj %}
+                    <tr>
+                        <td>{{ ele["date"] }}</td>
+                        <td>{{ ele["email"] }}</td>
+                        <td>{{ ele["trader"] }}</td>
+                        <td>{{ ele["ticker"] }}</td>
+                        <td>{{ ele["share_name"] }}</td>
+                        <td>{{ ele["side"] }}</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+            <br>
+            <br>
+        {% endif %}
     </div>
 
 

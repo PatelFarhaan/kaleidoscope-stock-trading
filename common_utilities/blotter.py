@@ -1,8 +1,14 @@
+#<==================================================================================================>
+#                                       IMPORTS
+#<==================================================================================================>
 import sys
 sys.path.append("../")
 from project.models import Shares, Transaction
 
 
+#<==================================================================================================>
+#                                       BLOTTER OBJECT
+#<==================================================================================================>
 class Blotter(object):
     def __init__(self, trader, user_obj):
         self.trader = trader
@@ -39,16 +45,17 @@ class Blotter(object):
             available_shares -= no_of_shares
 
         elif _action == "Sell":
+
             if not user_shares.get(share_name):
                 return {"result": False, "message": "you do not have this share"}
 
             user_share_amt = user_shares.get(share_name)
+            print(no_of_shares, user_shares)
+
             if user_share_amt < no_of_shares:
                 return {"result": False, "message": "you do not have enough share"}
 
             user_shares[share_name] -= no_of_shares
-
-            # Updating number of shares
             available_shares += no_of_shares
 
         # creating a new transaction
