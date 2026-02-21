@@ -1,17 +1,37 @@
-.idea
-*/.idea
-/.idea
-/test
-__pycache__
-/__pycache__
-angelfund_v1.log
-lambda
-/lambda
-lambda*
-/lambda/*
-/angelfund_v1.log*
-README-Template.md*
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+
+# Virtual environments
 venv/
+env/
+.venv/
+
+# IDE
 .idea/
+*/.idea
 .vscode/
+*.swp
+*.swo
+
+# OS
 .DS_Store
+Thumbs.db
+
+# Environment variables
+.env
+
+# Logs
+*.log
+
+# Distribution
+dist/
+build/
+*.egg-info/
+*.egg
+
+# Project specific
+/test
+lambda/
